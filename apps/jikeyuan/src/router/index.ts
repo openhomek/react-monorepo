@@ -1,19 +1,24 @@
- //路由配置
+import { createBrowserRouter } from 'react-router-dom'
 
- import Layout from "../pages/Layout";
- import Login  from "../pages/Login";
+import Home from '../pages/Home'
+import Layout from '../pages/Layout'
+import Login from '../pages/Login'
 
-import { createBrowserRouter } from "react-router-dom";
-
-const router = createBrowserRouter([{
-    path:'/',
+const router = createBrowserRouter([
+  {
+    path: '/',
     Component: Layout,
-},
-{
-    path:'/login',
-    Component:Login,
-}
-
+    children: [
+      {
+        index: true,
+        Component: Home,
+      },
+    ],
+  },
+  {
+    path: '/login',
+    Component: Login,
+  },
 ])
 
-export default router;
+export default router

@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom'
 
-import './index.scss'
+import './style.css'
 import router from './router'
 
 const rootElement = document.getElementById('root')
