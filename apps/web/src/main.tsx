@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import '@react-monorepo/ui/styles/globals.css'
 import { Button } from '@react-monorepo/ui'
 import './style.css'
 

@@ -1,0 +1,17 @@
+{
+  "name": "@react-monorepo/jikeyuan",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@react-monorepo/ui": "*",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  }
+}
