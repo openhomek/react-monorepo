@@ -1,17 +1,15 @@
 import { Button } from '@react-monorepo/ui'
 import { Search } from 'lucide-react'
 import { Link, Outlet } from 'react-router-dom'
+import logo from '../../assets/logo.svg'
 
 function Layout() {
   return (
     <div className="min-h-screen bg-white text-[#222222]">
       <header className="border-b border-[#eeeeee]">
         <div className="mx-auto flex h-20 max-w-[1200px] items-center px-6">
-          <Link
-            to="/"
-            className="text-3xl font-bold tracking-[-0.04em] text-primary"
-          >
-            港伴
+          <Link to="/" aria-label="有解" className="inline-flex items-center">
+            <img src={logo} alt="有解" className="h-10 w-auto" />
           </Link>
 
           <nav className="ml-12 hidden items-center gap-9 md:flex">
