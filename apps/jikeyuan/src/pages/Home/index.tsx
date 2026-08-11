@@ -189,28 +189,28 @@ function Home() {
         <div className="mx-auto max-w-[1200px] px-6 py-8">
           <h2 className="text-lg font-bold">你現在需要什麼？</h2>
 
-          <div className="mt-5 flex gap-3 overflow-x-auto pb-2">
-            {categoryItems.map((item) => {
-                
-              return (
-                <Button
-                  key={item.label}
-                  type="button"
-                  variant="outline"
-                  className="h-14 shrink-0 rounded-full border-[#dddddd] bg-white px-5 shadow-sm hover:border-primary hover:bg-[#fff7f8]"
-                >
-                  <img 
-                  src={item.Icon}
-                  alt=''
-                  aria-hidden='true'
-                  className='size-13 shrink-0 object-contain'
-                  draggable='false'
-                  />
-                  {item.label}  
-                </Button>
-              )
-            })}
-          </div>
+            <div className="mt-5 flex gap-3 overflow-x-auto pb-2">
+              {categoryItems.map((item) => {
+                  
+                return (
+                  <Button
+                    key={item.label}
+                    type="button"
+                    variant="outline"
+                    className="h-14 shrink-0 rounded-full border-[#dddddd] bg-white px-5 shadow-sm hover:border-primary hover:bg-[#fff7f8]"
+                  >
+                    <img 
+                    src={item.Icon}
+                    alt=''
+                    aria-hidden='true'
+                    className='size-13 shrink-0 object-contain'
+                    draggable='false'
+                    />
+                    {item.label}  
+                  </Button>
+                )
+              })}
+            </div>
         </div>
       </section>
     </main>
