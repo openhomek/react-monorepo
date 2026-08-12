@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { FaEnvelope, FaGithub, FaLinkedinIn } from 'react-icons/fa'
 
 import logo from '../../assets/logo.svg'
-import openHomeKLogo from '../../assets/partners/openhomek-lockup-stacked-black.svg'
+import openHomeKLogo from '../../assets/partners/openhomek-lockup-horizontal-black.svg'
 
 const exploreLinks = [
   { label: '新生攻略', href: '#guides' },
@@ -133,7 +133,7 @@ function SiteFooter() {
       </div>
 
       <div className="border-t border-[#dddddd]">
-        <div className="relative mx-auto flex min-h-[70px] w-full max-w-[1280px] flex-col gap-5 px-6 py-5 lg:grid lg:w-[calc(100%-112px)] lg:grid-cols-[1fr_auto_auto_auto] lg:items-center lg:gap-x-7 lg:px-0 lg:py-0">
+        <div className="relative mx-auto flex min-h-[70px] w-full max-w-[1280px] flex-col gap-5 px-6 py-5 lg:grid lg:w-[calc(100%-112px)] lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-x-8 lg:px-0 lg:py-0">
           <Button
             type="button"
             variant="outline"
@@ -201,22 +201,22 @@ function SiteFooter() {
             </ul>
           </nav>
 
-          <div
-            className="flex shrink-0 items-center gap-2 text-[10px] tracking-wide whitespace-nowrap text-[#777777]"
-            aria-label="Powered by OpenHomeK"
-          >
-            <span>Powered by</span>
-            <img
-              src={openHomeKLogo}
-              alt="OpenHomeK"
-              className="h-8 w-auto"
-              loading="lazy"
-            />
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-3 text-sm text-[#555555] lg:justify-self-end">
+            <p className="whitespace-nowrap">© 2026 有解社區</p>
+            <span className="hidden h-5 w-px bg-[#d8d8d8] lg:block" aria-hidden="true" />
+            <div
+              className="flex shrink-0 items-center gap-3 whitespace-nowrap"
+              aria-label="技術支持：OpenHomeK"
+            >
+              <span>技術支持</span>
+              <img
+                src={openHomeKLogo}
+                alt="OpenHomeK"
+                className="h-6 w-auto lg:h-7"
+                loading="lazy"
+              />
+            </div>
           </div>
-
-          <p className="text-sm whitespace-nowrap text-[#555555] lg:justify-self-end">
-            © 2026 有解社區
-          </p>
 
           <p className="sr-only" aria-live="polite">
             {footerNotice}
