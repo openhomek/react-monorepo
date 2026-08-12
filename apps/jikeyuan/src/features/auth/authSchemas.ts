@@ -7,10 +7,18 @@ const emailSchema = z
   .min(1, '請輸入電郵地址')
   .email('請輸入有效的電郵地址')
 
-export const loginSchema = z.object({
+export const loginEmailSchema = z.object({
   email: emailSchema,
+})
+
+export const loginPasswordSchema = z.object({
   password: z.string().min(1, '請輸入密碼'),
   rememberMe: z.boolean(),
+})
+
+export const loginSchema = loginEmailSchema.extend({
+  password: loginPasswordSchema.shape.password,
+  rememberMe: loginPasswordSchema.shape.rememberMe,
 })
 
 export const registrationEmailSchema = z
@@ -58,6 +66,10 @@ export const registrationPasswordSchema = z
   )
 
 export type LoginFormValues = z.infer<typeof loginSchema>
+export type LoginEmailFormValues = z.infer<typeof loginEmailSchema>
+export type LoginPasswordFormValues = z.infer<
+  typeof loginPasswordSchema
+>
 export type RegistrationEmailFormValues = z.infer<
   typeof registrationEmailSchema
 >

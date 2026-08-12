@@ -1,48 +1,56 @@
-# Three-step registration design QA
+# Two-step login design QA
 
-## Sources
+## Sources and capture normalization
 
-- Latest registration reference: `/var/folders/9b/92v5b0w967542hkcr73_3kch0000gp/T/codex-clipboard-94778f3b-8cc2-421b-977c-968dd97c4a1b.png`
-- Supplied illustration assets: `/Users/Admin/Downloads/gangban-svg-assets 2/`
-- Required project wordmark: `src/assets/logo.svg`
-- Implementation: `http://127.0.0.1:5175/register`
+- Visual reference: `/var/folders/9b/92v5b0w967542hkcr73_3kch0000gp/T/codex-clipboard-83820776-cb31-4b79-8f3d-9a5aa33cb49e.png`
+- Implementation: `http://127.0.0.1:5175/login`
+- Step-one implementation screenshot: `/private/tmp/jikeyuan-login-step1-1928x963.png`
+- Step-two implementation screenshot: `/private/tmp/jikeyuan-login-step2-1928x963.png`
+- Mobile step-two screenshot: `/private/tmp/jikeyuan-login-step2-mobile-390x844.png`
+- Full-view comparison: `/private/tmp/jikeyuan-login-comparison-v1.png`
+- Focused card comparison: `/private/tmp/jikeyuan-login-card-comparison-v1.png`
+- Source and desktop implementation: 1928×963 pixels, 1928×963 CSS viewport, density 1. No density normalization was required.
 
-## Visual comparison
+## State and intentional adaptations
 
-The reference and the anonymous step-one implementation were captured at the same 1487×1058 viewport and combined in `/private/tmp/jikeyuan-register-comparison-final.png`.
+The source shows the identifier step of a centered desktop login card. The implementation was compared in the same anonymous, identifier-entry state. Product decisions intentionally adapt the source as follows:
 
-- The card matches the reference at x=820, y=205 and 480px wide.
-- The desktop composition uses the same two-column hierarchy, copy, supplied community illustration, security reassurance, control radii and restrained red accent.
-- The project `logo.svg` intentionally replaces the word-only reference mark, as explicitly required by the product owner.
-- The step counter is an intentional addition that makes the requested email → code → password sequence visible and predictable.
-- Google and Apple controls are visibly disabled until provider credentials and callback endpoints exist; they are not presented as working actions.
+- The supplied project `logo.svg` replaces the Binance wordmark.
+- The card stays horizontally and vertically centered as requested.
+- Login is a two-step credential flow: email first, password second; it is not two-factor authentication.
+- The QR affordance, passkey and third-party providers are omitted because those login methods do not have working backend integrations.
+- The step counter communicates progress, while registration remains a separate link below the card instead of a tab.
 
-## Responsive evidence
+## Fidelity review
+
+- **Fonts and typography:** the existing Inter/CJK system stack, 32px semibold heading, compact labels and restrained secondary copy reproduce the reference hierarchy without importing a product-inappropriate brand typeface.
+- **Spacing and layout rhythm:** the desktop card is 424px wide, matching the reference card width. The 20px radius, 40px desktop padding, 56px inputs/CTAs and centered composition preserve its density. Step one is intentionally shorter because unavailable provider rows are removed.
+- **Colors and tokens:** pure white canvas, `#222222` text, light gray borders and the existing `#ff385c` product accent replace the source brand yellow consistently.
+- **Image quality and assets:** the only visible non-standard asset is the supplied vector project logo; field and visibility icons use the existing project asset set without placeholders or code-drawn substitutes.
+- **Copy and content:** localized Traditional Chinese copy clearly names email, password, change-email, remember-me, registration and progress actions.
+
+No actionable P0/P1/P2 mismatch remains. The focused comparison confirmed the card border, radius, form control sizing and primary hierarchy. The removed source rows are explicit product decisions, not missing visual content.
+
+## Responsive and interaction evidence
 
 | Viewport | State | Page scroll size | Result |
 | --- | --- | --- | --- |
-| 1487×1058 | Step 1 | 1487×1058 | Reference-aligned two-column composition |
-| 1366×768 | Step 1 | 1366×768 | Complete card and login entry visible; no scroll |
-| 1366×768 | Step 3 | 1366×768 | Password completion state visible; no scroll |
-| 744×768 | Step 1 | 744×768 | Centered single-column card; no scroll |
-| 744×768 | Steps 2 and 3 | 744×768 | Code and password states visible; no scroll |
-| 390×844 | Step 1 | 390×844 | Mobile card and login entry visible; no scroll |
-| 390×844 | Steps 2 and 3 | 390×844 | Code and password states visible; no scroll |
-| 390×844 | Code/password errors | 390×844 | Expanded localized errors visible; no scroll |
+| 1928×963 | Step 1 | 1928×963 | Centered 424px card; no overflow |
+| 1928×963 | Step 2 | 1928×963 | Complete password state visible; no overflow |
+| 1366×768 | Step 2 | 1366×768 | Complete card and registration link visible; no overflow |
+| 390×844 | Step 1 | 390×844 | 358px mobile card; no overflow |
+| 390×844 | Step 2 | 390×844 | Complete password state visible; no overflow |
 
-The decorative hero yields to the form below 1024px. Short desktop and tablet viewports reduce only non-interactive spacing; fields keep their touch-friendly height and primary actions remain at least 48px tall.
-
-## Interaction evidence
-
-- Empty step-one submission shows localized email and consent errors.
-- A valid email advances to the six-digit verification-code step.
-- An invalid code returns a localized error while preserving the entered email.
-- Send-code and verify-code failures use step-specific messages; an invalid email is not misreported as a bad code.
-- A valid code returns an in-memory registration credential and advances to password creation.
-- Password mismatch is rejected, and the visibility control switches the input type from `password` to `text`.
-- Successful final registration stores the short-lived Access Token only in module memory, updates the Redux user/session state, and navigates to authenticated home.
-- Refresh-token behavior remains cookie-based through credentialed requests; cookie flags are owned by the backend response.
-- Logout returns the app to anonymous state.
+- Empty email and password submissions show localized field errors.
+- A valid email advances without calling an account-existence endpoint.
+- Changing or returning to the email step preserves the normalized email and remember-me choice while clearing the password.
+- Password visibility changes the field type from `password` to `text`.
+- The second step submits email, password and remember-me together through the existing Redux login action.
+- Successful mock login stores the Access Token in module memory, updates Redux user/session state and navigates to authenticated home.
 - Browser console: no warnings or errors during the tested path.
+
+## Comparison history
+
+- Initial comparison found no P0/P1/P2 issues. The narrower first-step card height is expected after removing the unavailable provider methods, and the centered placement follows the explicit user decision.
 
 final result: passed

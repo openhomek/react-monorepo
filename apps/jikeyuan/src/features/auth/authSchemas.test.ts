@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
 import {
+  loginEmailSchema,
+  loginPasswordSchema,
   loginSchema,
   registrationCodeSchema,
   registrationEmailSchema,
@@ -8,24 +10,35 @@ import {
 } from './authSchemas'
 
 describe('登录表单规则', () => {
-  it('清理邮箱两端空格并转成小写', () => {
-    const result = loginSchema.parse({
+  it('第一步清理電郵兩端空格並轉成小寫', () => {
+    const result = loginEmailSchema.parse({
       email: '  User@Example.COM  ',
-      password: 'hello1234',
-      rememberMe: false,
     })
 
     expect(result.email).toBe('user@example.com')
   })
 
-  it('拒绝空密码', () => {
-    const result = loginSchema.safeParse({
-      email: 'user@example.com',
+  it('第二步拒絕空密碼', () => {
+    const result = loginPasswordSchema.safeParse({
       password: '',
       rememberMe: false,
     })
 
     expect(result.success).toBe(false)
+  })
+
+  it('完整登入資料保留兩步收集的三個欄位', () => {
+    const result = loginSchema.parse({
+      email: 'user@example.com',
+      password: 'hello1234',
+      rememberMe: true,
+    })
+
+    expect(result).toEqual({
+      email: 'user@example.com',
+      password: 'hello1234',
+      rememberMe: true,
+    })
   })
 })
 
