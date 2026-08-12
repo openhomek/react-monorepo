@@ -28,6 +28,14 @@ input {
   font: inherit;
 }
 
+.horizontal-scroll {
+  scrollbar-width: none;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 /* Registration keeps the reference's two-column composition on desktop and
    yields to a single centered form at narrower breakpoints. */
 @media (min-width: 1024px) and (max-height: 820px) {

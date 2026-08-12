@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import homeIcon from '../../assets/auth/home.svg'
 import heroIllustration from '../../assets/auth/registration-community.svg'
 import shieldIcon from '../../assets/auth/shield-check.svg'
-import logo from '../../assets/logo.svg'
 
 interface RegisterShellProps {
   children: ReactNode
@@ -15,18 +14,6 @@ function RegisterShell({ children }: RegisterShellProps) {
     <div className="registration-page min-h-screen bg-white text-[#222222]">
       <header className="registration-header h-24">
         <div className="mx-auto flex h-full max-w-[1440px] items-center px-6 sm:px-10">
-          <Link
-            to="/"
-            className="inline-flex shrink-0 items-center"
-            aria-label="有解首頁"
-          >
-            <img
-              src={logo}
-              alt="有解"
-              className="registration-header-logo h-10 w-auto"
-            />
-          </Link>
-
           <Link
             to="/"
             className="ml-auto inline-flex min-h-12 items-center gap-3 text-base font-medium text-[#3f3f3f] transition-colors hover:text-primary"
@@ -46,7 +33,7 @@ function RegisterShell({ children }: RegisterShellProps) {
         <section className="registration-hero hidden min-w-0 lg:block lg:-translate-y-8">
           <div className="max-w-[580px]">
             <h1 className="text-[40px] leading-[1.18] font-semibold tracking-[-0.025em]">
-              加入港伴，搵到同路人
+              加入有解，搵到同路人
             </h1>
             <p className="mt-4 text-lg leading-8 text-[#4f4f4f]">
               問生活小事、收藏攻略，同同路人一起適應香港。
@@ -54,7 +41,7 @@ function RegisterShell({ children }: RegisterShellProps) {
 
             <img
               src={heroIllustration}
-              alt="建立個人檔案、完成驗證並加入港伴社區"
+              alt="建立個人檔案、完成驗證並加入有解社區"
               className="registration-illustration mt-8 ml-5 w-[370px] max-w-full object-contain"
               draggable="false"
             />

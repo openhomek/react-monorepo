@@ -33,7 +33,7 @@ function AuthShell({ children }: AuthShellProps) {
             to="/register"
             className="font-medium text-primary hover:underline"
           >
-            建立港伴帳戶
+            建立有解帳戶
           </Link>
         </p>
       </div>

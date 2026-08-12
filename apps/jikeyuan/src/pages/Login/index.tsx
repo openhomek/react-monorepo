@@ -121,8 +121,8 @@ function Login() {
           </h1>
           <p className="mt-2 text-sm leading-6 text-[#666666]">
             {step === 'email'
-              ? '使用你的港伴帳戶繼續'
-              : '完成登入以繼續使用港伴'}
+              ? '使用你的有解帳戶繼續'
+              : '完成登入以繼續使用有解'}
           </p>
         </div>
 

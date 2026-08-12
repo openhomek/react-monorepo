@@ -275,7 +275,7 @@ function Register() {
 
         <div className="mt-8">
           <h1 className="text-2xl font-semibold tracking-[-0.02em]">
-            {step === 'email' && '歡迎加入港伴'}
+            {step === 'email' && '歡迎加入有解'}
             {step === 'code' && '查看你的電郵'}
             {step === 'password' && '設定你的密碼'}
           </h1>

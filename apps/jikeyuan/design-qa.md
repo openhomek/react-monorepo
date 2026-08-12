@@ -1,56 +1,49 @@
-# Two-step login design QA
+# Footer implementation design QA
 
-## Sources and capture normalization
+## Sources and normalization
 
-- Visual reference: `/var/folders/9b/92v5b0w967542hkcr73_3kch0000gp/T/codex-clipboard-83820776-cb31-4b79-8f3d-9a5aa33cb49e.png`
-- Implementation: `http://127.0.0.1:5175/login`
-- Step-one implementation screenshot: `/private/tmp/jikeyuan-login-step1-1928x963.png`
-- Step-two implementation screenshot: `/private/tmp/jikeyuan-login-step2-1928x963.png`
-- Mobile step-two screenshot: `/private/tmp/jikeyuan-login-step2-mobile-390x844.png`
-- Full-view comparison: `/private/tmp/jikeyuan-login-comparison-v1.png`
-- Focused card comparison: `/private/tmp/jikeyuan-login-card-comparison-v1.png`
-- Source and desktop implementation: 1928×963 pixels, 1928×963 CSS viewport, density 1. No density normalization was required.
+- Source visual truth: `/var/folders/9b/92v5b0w967542hkcr73_3kch0000gp/T/codex-clipboard-1407c36a-1182-4bc1-b647-4da92be438aa.png`
+- Rendered implementation: `http://127.0.0.1:5175/`
+- Desktop implementation screenshot: `/Users/Admin/projects/react-monorepo/apps/jikeyuan/design-qa-footer-desktop.jpg`
+- Side-by-side comparison: `/Users/Admin/projects/react-monorepo/apps/jikeyuan/design-qa-footer-comparison.jpg`
+- Mobile implementation screenshot: `/Users/Admin/projects/react-monorepo/apps/jikeyuan/design-qa-footer-mobile.jpg`
+- Final social-icon screenshot: `/Users/Admin/projects/react-monorepo/apps/jikeyuan/design-qa-footer-icons.jpg`
+- Source dimensions: 2048×741 pixels. The source is treated as a 2× capture and normalized to 1024×371 CSS pixels.
+- Implementation dimensions: 1024×371 CSS pixels at device pixel ratio 1.
+- The comparison board renders the normalized source and implementation at the same 850px display width. No browser chrome is included.
+- State: anonymous homepage, footer scrolled fully into view.
 
-## State and intentional adaptations
+## Findings
 
-The source shows the identifier step of a centered desktop login card. The implementation was compared in the same anonymous, identifier-entry state. Product decisions intentionally adapt the source as follows:
+No actionable P0/P1/P2 mismatch remains.
 
-- The supplied project `logo.svg` replaces the Binance wordmark.
-- The card stays horizontally and vertically centered as requested.
-- Login is a two-step credential flow: email first, password second; it is not two-factor authentication.
-- The QR affordance, passkey and third-party providers are omitted because those login methods do not have working backend integrations.
-- The step counter communicates progress, while registration remains a separate link below the card instead of a tab.
-
-## Fidelity review
-
-- **Fonts and typography:** the existing Inter/CJK system stack, 32px semibold heading, compact labels and restrained secondary copy reproduce the reference hierarchy without importing a product-inappropriate brand typeface.
-- **Spacing and layout rhythm:** the desktop card is 424px wide, matching the reference card width. The 20px radius, 40px desktop padding, 56px inputs/CTAs and centered composition preserve its density. Step one is intentionally shorter because unavailable provider rows are removed.
-- **Colors and tokens:** pure white canvas, `#222222` text, light gray borders and the existing `#ff385c` product accent replace the source brand yellow consistently.
-- **Image quality and assets:** the only visible non-standard asset is the supplied vector project logo; field and visibility icons use the existing project asset set without placeholders or code-drawn substitutes.
-- **Copy and content:** localized Traditional Chinese copy clearly names email, password, change-email, remember-me, registration and progress actions.
-
-No actionable P0/P1/P2 mismatch remains. The focused comparison confirmed the card border, radius, form control sizing and primary hierarchy. The removed source rows are explicit product decisions, not missing visual content.
+- **Fonts and typography:** the existing Inter/CJK stack reproduces the compact 14px navigation, 16px section headings and restrained gray supporting copy. Column headings, email and legal labels preserve the reference hierarchy and wrapping.
+- **Spacing and layout rhythm:** desktop footer measures 300px for the four-column area and 71px for the legal bar. The normalized total is 372px including borders, within one pixel of the 371px source. Column starts, 56px outer margins, CTA sizing, social positions, legal group and copyright alignment match the reference.
+- **Colors and tokens:** warm `#faf9f7` surface, `#222222` headings, gray secondary copy, light dividers and the project `#ff385c` accent reproduce the reference balance without gradients or decorative substitutes.
+- **Image quality and assets:** the existing project `logo.svg` is used directly, following the explicit “有解” rebrand requirement. The supplied official OpenHomeK stacked SVG is preserved as a restrained “Powered by” endorsement in the legal bar. GitHub, LinkedIn and Email use their exact `react-icons/fa` vector marks rather than approximate UI icons.
+- **Copy and content:** brand statement, product descriptor, exploration links, six guide links, support links, email, response expectation, legal items and copyright all match the supplied footer content.
+- **Accessibility and behavior:** sections have labelled headings, navigation groups have accessible names, mail links use `mailto:`, the CTA targets the community section, controls have focus states, the GitHub icon exposes its external destination, remaining placeholders announce their forthcoming state, and the back-to-top action performs a smooth scroll.
 
 ## Responsive and interaction evidence
 
-| Viewport | State | Page scroll size | Result |
-| --- | --- | --- | --- |
-| 1928×963 | Step 1 | 1928×963 | Centered 424px card; no overflow |
-| 1928×963 | Step 2 | 1928×963 | Complete password state visible; no overflow |
-| 1366×768 | Step 2 | 1366×768 | Complete card and registration link visible; no overflow |
-| 390×844 | Step 1 | 390×844 | 358px mobile card; no overflow |
-| 390×844 | Step 2 | 390×844 | Complete password state visible; no overflow |
+| Viewport | Result |
+| --- | --- |
+| 1024×371 | Four-column composition, 300px main area and 71px legal bar; no horizontal overflow |
+| 390×844 | Brand spans full width, exploration and guide lists form two columns, support spans full width, and the legal bar stacks without clipping |
 
-- Empty email and password submissions show localized field errors.
-- A valid email advances without calling an account-existence endpoint.
-- Changing or returning to the email step preserves the normalized email and remember-me choice while clearing the password.
-- Password visibility changes the field type from `password` to `text`.
-- The second step submits email, password and remember-me together through the existing Redux login action.
-- Successful mock login stores the Access Token in module memory, updates Redux user/session state and navigates to authenticated home.
-- Browser console: no warnings or errors during the tested path.
+- “加入有解社區” updates the hash to `#community` and places the community section 96px below the viewport top.
+- “Cookie 設定” and social placeholder controls update the polite live status.
+- “回到頁面頂部” was tested from the mobile footer and returned `scrollY` to 0.
+- `hello@gangban.hk`, content-correction and partnership links expose valid `mailto:` targets.
+- GitHub opens `https://github.com/openhomek` in a new tab, LinkedIn exposes a labelled forthcoming control, and the Email icon links directly to `mailto:hello@gangban.hk`.
+- Browser console: no warnings or errors.
+- Automated verification: ESLint passed, 14 Vitest tests passed, TypeScript and Vite production build passed.
 
 ## Comparison history
 
-- Initial comparison found no P0/P1/P2 issues. The narrower first-step card height is expected after removing the unavailable provider methods, and the centered placement follows the explicit user decision.
+1. Initial implementation wrapped into two columns at the 1024px comparison viewport, producing a 792px footer. The breakpoint hierarchy was corrected to use the established `lg` variant, restoring the four-column layout.
+2. The first desktop pass measured 400px and placed the legal group too far left. Link touch rows and vertical padding were calibrated to a 300px main area, while the bottom bar was changed to the reference-aligned three-track grid.
+3. Mobile initially stacked every navigation group into one 1162px column. The final responsive pass uses a two-column exploration/guide region with full-width brand and support groups, reducing the footer to 930px without hiding content.
+4. Post-fix visual evidence: `/Users/Admin/projects/react-monorepo/apps/jikeyuan/design-qa-footer-comparison.jpg`. No actionable P0/P1/P2 issue remains.
 
 final result: passed
