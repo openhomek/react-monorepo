@@ -283,3 +283,100 @@ input {
     margin-top: 18px;
   }
 }
+
+/* Latest registration flow: dedicated card layout with a stable three-step
+   surface. The desktop illustration is decorative and yields to the form on
+   tablet and mobile screens. */
+@media (min-width: 1024px) and (max-height: 820px) {
+  .registration-header {
+    height: 64px;
+  }
+
+  .registration-header-logo {
+    height: 32px;
+  }
+
+  .registration-main {
+    min-height: calc(100dvh - 64px);
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+
+  .registration-card {
+    min-height: 0;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+
+  .registration-hero h1 {
+    font-size: 32px;
+  }
+
+  .registration-hero p {
+    font-size: 16px;
+  }
+
+  .registration-illustration {
+    width: min(370px, 34vw);
+    max-height: calc(100dvh - 225px);
+  }
+
+  .registration-security {
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .registration-header {
+    height: 72px;
+  }
+
+  .registration-main {
+    min-height: calc(100dvh - 72px);
+    grid-template-columns: minmax(0, 1fr);
+    padding-top: 24px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) and (max-height: 820px) {
+  .registration-main {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+
+  .registration-card {
+    min-height: 0;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+@media (max-width: 639px) {
+  .registration-header {
+    height: 64px;
+  }
+
+  .registration-header-logo {
+    height: 32px;
+  }
+
+  .registration-main {
+    min-height: calc(100dvh - 64px);
+    padding: 16px;
+  }
+
+  .registration-card {
+    min-height: 0;
+    padding: 24px 20px;
+  }
+
+  .registration-card-logo {
+    height: 28px;
+  }
+
+  .registration-panel > p {
+    margin-top: 20px;
+    font-size: 14px;
+  }
+}

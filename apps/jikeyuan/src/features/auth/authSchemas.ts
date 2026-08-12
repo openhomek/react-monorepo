@@ -13,14 +13,30 @@ export const loginSchema = z.object({
   rememberMe: z.boolean(),
 })
 
-export const registerSchema = z
+export const registrationEmailSchema = z
   .object({
-    name: z
-      .string()
-      .trim()
-      .min(2, '用戶名稱至少需要 2 個字元')
-      .max(30, '用戶名稱不能超過 30 個字元'),
     email: emailSchema,
+    acceptTerms: z.boolean(),
+  })
+  .refine(
+    (values) => {
+      return values.acceptTerms
+    },
+    {
+      path: ['acceptTerms'],
+      message: '請閱讀並同意使用條款及私隱政策',
+    },
+  )
+
+export const registrationCodeSchema = z.object({
+  code: z
+    .string()
+    .trim()
+    .regex(/^\d{6}$/, '請輸入六位數字驗證碼'),
+})
+
+export const registrationPasswordSchema = z
+  .object({
     password: z
       .string()
       .min(8, '密碼至少需要 8 個字元')
@@ -30,7 +46,6 @@ export const registerSchema = z
     confirmPassword: z
       .string()
       .min(1, '請再次輸入密碼'),
-    acceptTerms: z.boolean(),
   })
   .refine(
     (values) => {
@@ -41,15 +56,14 @@ export const registerSchema = z
       message: '兩次輸入的密碼不一致',
     },
   )
-  .refine(
-    (values) => {
-      return values.acceptTerms
-    },
-    {
-      path: ['acceptTerms'],
-      message: '請閱讀並同意服務條款',
-    },
-  )
 
 export type LoginFormValues = z.infer<typeof loginSchema>
-export type RegisterFormValues = z.infer<typeof registerSchema>
+export type RegistrationEmailFormValues = z.infer<
+  typeof registrationEmailSchema
+>
+export type RegistrationCodeFormValues = z.infer<
+  typeof registrationCodeSchema
+>
+export type RegistrationPasswordFormValues = z.infer<
+  typeof registrationPasswordSchema
+>

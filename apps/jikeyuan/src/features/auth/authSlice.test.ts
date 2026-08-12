@@ -16,6 +16,7 @@ import authReducer, {
   initializeSession,
   loginAccount,
   logoutAccount,
+  registerAccount,
 } from './authSlice'
 
 vi.mock('../../apis/auth', () => {
@@ -115,6 +116,41 @@ describe('认证状态', () => {
     expect(getCurrentUserRequest).toHaveBeenCalledTimes(1)
     expect(store.getState().auth.status).toBe('authenticated')
     expect(store.getState().auth.user?.id).toBe('user-1')
+  })
+
+  it('完成三步註冊後把驗證憑證交給 API 並建立會話', async () => {
+    vi.mocked(registerRequest).mockResolvedValue({
+      accessToken: 'registered-access-token',
+      user: {
+        id: 'user-2',
+        name: 'new',
+        email: 'new@example.com',
+      },
+    })
+
+    const store = configureStore({
+      reducer: {
+        auth: authReducer,
+      },
+    })
+
+    await store.dispatch(
+      registerAccount({
+        email: 'new@example.com',
+        password: 'hello1234',
+        registrationToken: 'verified-email-token',
+      }),
+    )
+
+    expect(registerRequest).toHaveBeenCalledWith({
+      email: 'new@example.com',
+      password: 'hello1234',
+      registrationToken: 'verified-email-token',
+    })
+    expect(setAccessToken).toHaveBeenCalledWith(
+      'registered-access-token',
+    )
+    expect(store.getState().auth.status).toBe('authenticated')
   })
 
   it('退出成功后清理内存 Token 和 Redux 用户', async () => {

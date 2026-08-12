@@ -19,9 +19,18 @@ export interface LoginPayload {
 }
 
 export interface RegisterPayload {
-  name: string
   email: string
   password: string
+  registrationToken: string
+}
+
+export interface RequestRegistrationCodePayload {
+  email: string
+}
+
+export interface VerifyRegistrationCodePayload {
+  email: string
+  code: string
 }
 
 interface AuthSessionResponse {
@@ -31,6 +40,12 @@ interface AuthSessionResponse {
 interface CurrentUserResponse {
   data: {
     user: AuthUser
+  }
+}
+
+interface RegistrationVerificationResponse {
+  data: {
+    registrationToken: string
   }
 }
 
@@ -54,6 +69,31 @@ export async function registerRequest(
   )
 
   return response.data.data
+}
+
+export async function requestRegistrationCodeRequest(
+  payload: RequestRegistrationCodePayload,
+): Promise<void> {
+  await publicHttp.post('/auth/register/send-code', payload)
+}
+
+export async function verifyRegistrationCodeRequest(
+  payload: VerifyRegistrationCodePayload,
+): Promise<string> {
+  const response =
+    await publicHttp.post<RegistrationVerificationResponse>(
+      '/auth/register/verify-code',
+      payload,
+    )
+
+  const registrationToken =
+    response.data.data.registrationToken.trim()
+
+  if (registrationToken.length === 0) {
+    throw new Error('驗證接口沒有返回有效註冊憑證')
+  }
+
+  return registrationToken
 }
 
 export async function getCurrentUserRequest(): Promise<AuthUser> {
