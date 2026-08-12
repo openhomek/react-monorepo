@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" role="img" aria-labelledby="title">
+  <title id="title">顯示密碼</title>
+  <path d="M2.7 12s3.5-6 9.3-6 9.3 6 9.3 6-3.5 6-9.3 6-9.3-6-9.3-6Z" stroke="#5b5b5b" stroke-width="1.5" stroke-linejoin="round"/>
+  <circle cx="12" cy="12" r="2.7" stroke="#5b5b5b" stroke-width="1.5"/>
+</svg>

@@ -1,7 +1,6 @@
 import { Button, Input } from '@react-monorepo/ui'
 import {
   Clock3,
-  Icon,
   SendHorizontal,
 } from 'lucide-react'
 import { type FormEvent, useState } from 'react'

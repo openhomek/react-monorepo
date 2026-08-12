@@ -1,9 +1,31 @@
-import { Button } from '@react-monorepo/ui'
+import { Button, Spinner } from '@react-monorepo/ui'
 import { Search } from 'lucide-react'
+import { useState } from 'react'
 import { Link, Outlet } from 'react-router-dom'
+
 import logo from '../../assets/logo.svg'
+import {
+  clearAuthError,
+  logoutAccount,
+} from '../../features/auth/authSlice'
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../../store/hooks'
 
 function Layout() {
+  const dispatch = useAppDispatch()
+  const user = useAppSelector((state) => state.auth.user)
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+
+  async function handleLogout(): Promise<void> {
+    setIsLoggingOut(true)
+
+    await dispatch(logoutAccount())
+
+    setIsLoggingOut(false)
+  }
+
   return (
     <div className="min-h-screen bg-white text-[#222222]">
       <header className="border-b border-[#eeeeee]">
@@ -37,9 +59,38 @@ function Layout() {
               <Search />
             </Button>
 
-            <Button variant="outline" className="rounded-full px-6" asChild>
-              <Link to="/login">登入</Link>
-            </Button>
+            {user === null ? (
+              <Button
+                variant="outline"
+                className="rounded-full px-6"
+                asChild
+              >
+                <Link
+                  to="/login"
+                  onClick={() => {
+                    dispatch(clearAuthError())
+                  }}
+                >
+                  登入
+                </Link>
+              </Button>
+            ) : (
+              <div className="flex items-center gap-3">
+                <span className="hidden text-sm font-medium sm:inline">
+                  {user.name}
+                </span>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="rounded-full px-6"
+                  disabled={isLoggingOut}
+                  onClick={handleLogout}
+                >
+                  {isLoggingOut && <Spinner />}
+                  {isLoggingOut ? '正在登出' : '登出'}
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </header>

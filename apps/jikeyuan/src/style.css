@@ -27,3 +27,259 @@ button,
 input {
   font: inherit;
 }
+
+/* Auth composition follows design.md: a 1200px canvas, 80px navigation,
+   56px form controls, 48px CTAs and one Rausch accent. */
+.auth-header {
+  height: 80px;
+}
+
+.auth-main {
+  min-height: calc(100dvh - 80px);
+}
+
+.auth-logo {
+  height: 40px;
+}
+
+.auth-home-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.auth-panel {
+  display: grid;
+  align-items: center;
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+.auth-tabs {
+  height: 48px;
+}
+
+.auth-panel-title {
+  margin-top: 28px;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.auth-panel-content {
+  margin-top: 20px;
+}
+
+.auth-input {
+  height: 56px;
+  border-radius: 8px;
+}
+
+.auth-login-fields {
+  gap: 16px;
+}
+
+.auth-options {
+  margin-top: 16px;
+}
+
+.auth-primary-button,
+.auth-register-button {
+  height: 48px;
+  border-radius: 8px;
+}
+
+.auth-primary-button {
+  margin-top: 24px;
+}
+
+.auth-social {
+  margin-top: 20px;
+}
+
+.auth-social-buttons {
+  margin-top: 16px;
+  gap: 8px;
+}
+
+.auth-social-button {
+  height: 48px;
+  border-radius: 8px;
+}
+
+.auth-account {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.auth-security {
+  margin-top: 24px;
+  font-size: 14px;
+}
+
+.auth-register-fields {
+  gap: 10px;
+}
+
+.auth-register-input {
+  height: 56px;
+  border-radius: 8px;
+}
+
+.auth-register-button {
+  margin-top: 16px;
+}
+
+@media (min-width: 1128px) {
+  .auth-main {
+    grid-template-columns: 55% 45%;
+  }
+
+  .auth-hero {
+    display: block;
+  }
+
+  .auth-panel-inner {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .auth-illustration {
+    width: min(620px, 51vw);
+    max-height: calc(100dvh - 250px);
+  }
+}
+
+@media (min-width: 1128px) and (max-height: 800px) {
+  .auth-header {
+    height: 64px;
+  }
+
+  .auth-main {
+    min-height: calc(100dvh - 64px);
+  }
+
+  .auth-logo {
+    height: 32px;
+  }
+
+  .auth-hero {
+    padding-top: 24px;
+  }
+
+  .auth-eyebrow {
+    font-size: 14px;
+  }
+
+  .auth-title {
+    margin-top: 10px;
+    font-size: 28px;
+  }
+
+  .auth-copy {
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .auth-illustration {
+    margin-top: -78px;
+    max-height: calc(100dvh - 205px);
+  }
+
+  .auth-panel {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+
+  .auth-tabs {
+    height: 48px;
+  }
+
+  .auth-panel-title {
+    margin-top: 16px;
+    font-size: 28px;
+  }
+
+  .auth-panel-content {
+    margin-top: 12px;
+  }
+
+  .auth-input {
+    height: 56px;
+  }
+
+  .auth-login-fields {
+    gap: 10px;
+  }
+
+  .auth-options {
+    margin-top: 10px;
+  }
+
+  .auth-primary-button {
+    height: 48px;
+    margin-top: 14px;
+  }
+
+  .auth-social {
+    margin-top: 12px;
+  }
+
+  .auth-social-buttons {
+    margin-top: 9px;
+    gap: 6px;
+  }
+
+  .auth-social-button {
+    height: 48px;
+  }
+
+  .auth-account {
+    margin-top: 10px;
+  }
+
+  .auth-security {
+    margin-top: 12px;
+  }
+
+  .auth-register-fields {
+    gap: 6px;
+  }
+
+  .auth-register-input {
+    height: 56px;
+  }
+
+  .auth-register-button {
+    height: 48px;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 743px) {
+  .auth-header {
+    height: 64px;
+  }
+
+  .auth-main {
+    min-height: calc(100dvh - 64px);
+  }
+
+  .auth-logo {
+    height: 32px;
+  }
+
+  .auth-panel {
+    align-items: start;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+
+  .auth-panel-title {
+    margin-top: 24px;
+    font-size: 28px;
+  }
+
+  .auth-panel-content {
+    margin-top: 18px;
+  }
+}
