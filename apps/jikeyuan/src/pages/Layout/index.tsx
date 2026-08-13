@@ -11,7 +11,7 @@ import {
 } from '@react-monorepo/ui'
 import { Menu, Search } from 'lucide-react'
 import { useState } from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 
 import logo from '../../assets/logo.svg'
 import SiteFooter from '../../components/layout/SiteFooter'
@@ -19,15 +19,19 @@ import { clearAuthError, logoutAccount } from '../../features/auth/authSlice'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 
 const navigationItems = [
-  { label: '新生攻略', href: '#guides' },
-  { label: '生活指南', href: '#categories' },
-  { label: '社區', href: '#community' },
+  { label: '新生攻略', href: '/#guides' },
+  { label: '生活指南', href: '/#categories' },
+  { label: '社區', href: '/community' },
 ]
 
 function Layout() {
   const dispatch = useAppDispatch()
+  const location = useLocation()
   const user = useAppSelector((state) => state.auth.user)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
+  const isOfflineEmpty =
+    location.pathname === '/community' &&
+    new URLSearchParams(location.search).get('state') === 'offline-empty'
 
   async function handleLogout(): Promise<void> {
     setIsLoggingOut(true)
@@ -61,27 +65,29 @@ function Layout() {
 
           <nav className="ml-10 hidden items-center gap-9 min-[744px]:flex" aria-label="主要導覽">
             {navigationItems.map((item) => (
-              <a
+              <Link
                 key={item.label}
                 className="inline-flex min-h-12 items-center text-sm font-semibold transition-colors hover:text-primary"
-                href={item.href}
+                to={item.href}
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
           <div className="ml-auto flex items-center gap-2 sm:gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              className="size-11 rounded-full"
-              aria-label="搜尋或提問"
-              onClick={focusQuestionInput}
-            >
-              <Search />
-            </Button>
+            {!isOfflineEmpty && (
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                className="size-11 rounded-full"
+                aria-label="搜尋或提問"
+                onClick={focusQuestionInput}
+              >
+                <Search />
+              </Button>
+            )}
 
             {user === null ? (
               <Button variant="outline" className="hidden h-11 rounded-full px-6 sm:inline-flex" asChild>
@@ -135,13 +141,15 @@ function Layout() {
                 <nav className="flex flex-col px-4 py-4" aria-label="手機導覽">
                   {navigationItems.map((item) => (
                     <SheetClose key={item.label} asChild>
-                      <a
-                        href={item.href}
+                      <Link
+                        to={item.href}
                         className="flex min-h-12 items-center rounded-lg px-3 font-semibold transition-colors hover:bg-[#fff7f8] hover:text-primary"
-                        onClick={() => scrollAfterMenuClose(item.href)}
+                        onClick={() => {
+                          if (item.href.startsWith('/#')) scrollAfterMenuClose(item.href.slice(1))
+                        }}
                       >
                         {item.label}
-                      </a>
+                      </Link>
                     </SheetClose>
                   ))}
                 </nav>

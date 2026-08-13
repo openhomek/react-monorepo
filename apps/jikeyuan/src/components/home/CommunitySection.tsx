@@ -11,6 +11,7 @@ import {
   MessageCircle,
   TrendingUp,
 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 type CommunityFeed = 'latest' | 'hot' | 'unanswered'
 
@@ -221,10 +222,10 @@ function CommunitySection() {
             variant="link"
             className="h-12 px-0 font-semibold text-primary"
           >
-            <a href="#community-posts">
+            <Link to="/community">
               進入社區
               <ArrowRight />
-            </a>
+            </Link>
           </Button>
         </div>
 
@@ -267,10 +268,10 @@ function CommunitySection() {
             variant="link"
             className="h-12 font-semibold text-primary"
           >
-            <a href="#community-posts">
+            <Link to="/community">
               查看全部熱門帖子
               <ArrowRight />
-            </a>
+            </Link>
           </Button>
         </div>
       </div>

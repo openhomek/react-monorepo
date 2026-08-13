@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 
 import Home from '../pages/Home'
+import Community from '../pages/Community'
 import Layout from '../pages/Layout'
 import Login from '../pages/Login'
 import Register from '../pages/Register'
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
       {
         index: true,
         Component: Home,
+      },
+      {
+        path: 'community',
+        Component: Community,
       },
     ],
   },
