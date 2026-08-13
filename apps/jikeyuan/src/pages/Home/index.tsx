@@ -10,7 +10,7 @@ import paymentIcon from '../../assets/icons/icon-bank-payment.svg'
 import networkIcon from '../../assets/icons/icon-phone-network.svg'
 import rentHouseIcon from '../../assets/icons/icon-rent-housing.svg'
 import transportIcon from '../../assets/icons/icon-transit.svg'
-import heroImage from '../../assets/images/hero.png'
+import heroImage from '../../assets/images/hero.jpg'
 
 const categoryItems = [
   { label: '入境證件', icon: passportIcon },
@@ -110,6 +110,10 @@ function Home() {
           <img
             src={heroImage}
             alt="有解社區交流與香港生活服務插畫"
+            width="1448"
+            height="1086"
+            fetchPriority="high"
+            decoding="async"
             className="max-h-[430px] w-full object-contain min-[744px]:scale-[1.24]"
             draggable="false"
           />

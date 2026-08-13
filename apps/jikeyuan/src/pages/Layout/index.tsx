@@ -15,6 +15,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom'
 
 import logo from '../../assets/logo.svg'
 import SiteFooter from '../../components/layout/SiteFooter'
+import SeoMetadata from '../../components/seo/SeoMetadata'
 import { clearAuthError, logoutAccount } from '../../features/auth/authSlice'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 
@@ -57,6 +58,7 @@ function Layout() {
 
   return (
     <div className="flex min-h-screen flex-col bg-white text-[#222222]">
+      <SeoMetadata />
       <header className="border-b border-[#eeeeee] bg-white">
         <div className="mx-auto flex h-16 max-w-[1200px] items-center px-6 min-[744px]:px-8">
           <Link to="/" aria-label="有解首頁" className="inline-flex shrink-0 items-center">

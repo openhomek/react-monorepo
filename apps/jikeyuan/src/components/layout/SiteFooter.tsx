@@ -7,11 +7,11 @@ import logo from '../../assets/logo.svg'
 import openHomeKLogo from '../../assets/partners/openhomek-lockup-horizontal-black.svg'
 
 const exploreLinks = [
-  { label: '新生攻略', href: '#guides' },
-  { label: '生活指南', href: '#categories' },
-  { label: '社區論壇', href: '#community' },
-  { label: '本週熱門', href: '#community-posts' },
-  { label: '搜尋', href: '#question-form' },
+  { label: '新生攻略', href: '/#guides' },
+  { label: '生活指南', href: '/#categories' },
+  { label: '社區論壇', href: '/community' },
+  { label: '本週熱門問答', href: '/community' },
+  { label: '搜尋社區問題', href: '/community' },
 ]
 
 const guideLinks = [
@@ -62,7 +62,7 @@ function SiteFooter() {
             variant="outline"
             className="mt-6 h-10 rounded-full border-primary px-7 font-semibold text-primary hover:bg-[#fff0f2] hover:text-primary"
           >
-            <a href="#community">
+            <a href="/community">
               加入有解社區
               <ArrowRight />
             </a>
@@ -89,7 +89,7 @@ function SiteFooter() {
           <ul className="mt-3 space-y-1 text-sm">
             {guideLinks.map((label) => (
               <li key={label}>
-                <FooterLink href="#categories">{label}</FooterLink>
+                <FooterLink href="/#categories">{label}</FooterLink>
               </li>
             ))}
           </ul>
@@ -101,7 +101,7 @@ function SiteFooter() {
           </h2>
           <ul className="mt-3 space-y-1 text-sm">
             <li>
-              <FooterLink href="#community">常見問題</FooterLink>
+              <FooterLink href="/community">社區常見問題</FooterLink>
             </li>
             <li>
               <a
