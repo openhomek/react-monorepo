@@ -1,12 +1,15 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
+import { getGuideByPath, type Guide } from '../../content/guides'
+
 interface PageMetadata {
   title: string
   description: string
   canonicalPath: string
   indexable: boolean
-  schemaType?: 'WebPage' | 'CollectionPage'
+  schemaType?: 'WebPage' | 'CollectionPage' | 'Article'
+  article?: Guide
 }
 
 const pageMetadata: Record<string, PageMetadata> = {
@@ -40,6 +43,28 @@ const pageMetadata: Record<string, PageMetadata> = {
   },
 }
 
+function resolvePageMetadata(pathname: string): PageMetadata {
+  const guide = getGuideByPath(pathname)
+
+  if (guide) {
+    return {
+      title: `${guide.title}｜有解`,
+      description: guide.description,
+      canonicalPath: guide.path,
+      indexable: true,
+      schemaType: 'Article',
+      article: guide,
+    }
+  }
+
+  return pageMetadata[pathname] ?? {
+    title: '找不到頁面｜有解',
+    description: '你所尋找的有解頁面不存在。',
+    canonicalPath: pathname,
+    indexable: false,
+  }
+}
+
 function setNamedMeta(name: string, content: string): void {
   let element = document.head.querySelector<HTMLMetaElement>(`meta[name="${name}"]`)
 
@@ -52,6 +77,10 @@ function setNamedMeta(name: string, content: string): void {
   element.content = content
 }
 
+function removeNamedMeta(name: string): void {
+  document.head.querySelector<HTMLMetaElement>(`meta[name="${name}"]`)?.remove()
+}
+
 function setPropertyMeta(property: string, content: string): void {
   let element = document.head.querySelector<HTMLMetaElement>(`meta[property="${property}"]`)
 
@@ -62,6 +91,10 @@ function setPropertyMeta(property: string, content: string): void {
   }
 
   element.content = content
+}
+
+function removePropertyMeta(property: string): void {
+  document.head.querySelector<HTMLMetaElement>(`meta[property="${property}"]`)?.remove()
 }
 
 function setCanonical(href: string): void {
@@ -90,12 +123,7 @@ function SeoMetadata() {
   const location = useLocation()
 
   useEffect(() => {
-    const metadata = pageMetadata[location.pathname] ?? {
-      title: '找不到頁面｜有解',
-      description: '你所尋找的有解頁面不存在。',
-      canonicalPath: location.pathname,
-      indexable: false,
-    }
+    const metadata = resolvePageMetadata(location.pathname)
     const isCommunityPreview =
       location.pathname === '/community' &&
       new URLSearchParams(location.search).has('state')
@@ -109,7 +137,7 @@ function SeoMetadata() {
     setNamedMeta('robots', isIndexable ? 'index, follow' : 'noindex, follow')
     setNamedMeta('googlebot', isIndexable ? 'index, follow' : 'noindex, follow')
     setCanonical(canonicalUrl)
-    setPropertyMeta('og:type', 'website')
+    setPropertyMeta('og:type', metadata.schemaType === 'Article' ? 'article' : 'website')
     setPropertyMeta('og:locale', 'zh_HK')
     setPropertyMeta('og:site_name', '有解')
     setPropertyMeta('og:title', metadata.title)
@@ -119,6 +147,16 @@ function SeoMetadata() {
     setNamedMeta('twitter:title', metadata.title)
     setNamedMeta('twitter:description', metadata.description)
 
+    if (metadata.article) {
+      setNamedMeta('author', '有解編輯部')
+      setPropertyMeta('article:published_time', metadata.article.publishedDate)
+      setPropertyMeta('article:modified_time', metadata.article.reviewedDate)
+    } else {
+      removeNamedMeta('author')
+      removePropertyMeta('article:published_time')
+      removePropertyMeta('article:modified_time')
+    }
+
     const scriptId = 'seo-structured-data'
     const existingScript = document.getElementById(scriptId)
 
@@ -127,36 +165,88 @@ function SeoMetadata() {
       return
     }
 
-    const structuredData = {
-      '@context': 'https://schema.org',
-      '@graph': [
+    const organizationId = `${siteOrigin}/#organization`
+    const websiteId = `${siteOrigin}/#website`
+    const graph: Array<Record<string, unknown>> = [
+      {
+        '@type': 'Organization',
+        '@id': organizationId,
+        name: '有解',
+        url: `${siteOrigin}/`,
+        logo: `${siteOrigin}/favicon.svg`,
+        email: 'hello@gangban.hk',
+        sameAs: ['https://github.com/openhomek'],
+      },
+      {
+        '@type': 'WebSite',
+        '@id': websiteId,
+        name: '有解',
+        url: `${siteOrigin}/`,
+        inLanguage: 'zh-Hant-HK',
+        publisher: { '@id': organizationId },
+      },
+    ]
+
+    if (metadata.schemaType === 'Article' && metadata.article) {
+      const breadcrumbId = `${canonicalUrl}#breadcrumb`
+
+      graph.push(
         {
-          '@type': 'Organization',
-          '@id': `${siteOrigin}/#organization`,
-          name: '有解',
-          url: `${siteOrigin}/`,
-          logo: `${siteOrigin}/favicon.svg`,
-          email: 'hello@gangban.hk',
-          sameAs: ['https://github.com/openhomek'],
-        },
-        {
-          '@type': 'WebSite',
-          '@id': `${siteOrigin}/#website`,
-          name: '有解',
-          url: `${siteOrigin}/`,
-          inLanguage: 'zh-Hant-HK',
-          publisher: { '@id': `${siteOrigin}/#organization` },
-        },
-        {
-          '@type': metadata.schemaType,
-          '@id': `${canonicalUrl}#webpage`,
-          name: metadata.title,
+          '@type': 'Article',
+          '@id': `${canonicalUrl}#article`,
+          headline: metadata.article.title,
+          name: metadata.article.title,
           description: metadata.description,
           url: canonicalUrl,
+          mainEntityOfPage: canonicalUrl,
+          datePublished: metadata.article.publishedDate,
+          dateModified: metadata.article.reviewedDate,
           inLanguage: 'zh-Hant-HK',
-          isPartOf: { '@id': `${siteOrigin}/#website` },
+          author: { '@id': organizationId },
+          publisher: { '@id': organizationId },
+          isPartOf: { '@id': websiteId },
+          breadcrumb: { '@id': breadcrumbId },
         },
-      ],
+        {
+          '@type': 'BreadcrumbList',
+          '@id': breadcrumbId,
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: '首頁',
+              item: `${siteOrigin}/`,
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: '新生攻略',
+              item: `${siteOrigin}/#guides`,
+            },
+            {
+              '@type': 'ListItem',
+              position: 3,
+              name: metadata.article.title,
+              item: canonicalUrl,
+            },
+          ],
+        },
+      )
+    } else {
+      graph.push({
+        '@type': metadata.schemaType,
+        '@id': `${canonicalUrl}#webpage`,
+        name: metadata.title,
+        description: metadata.description,
+        url: canonicalUrl,
+        inLanguage: 'zh-Hant-HK',
+        isPartOf: { '@id': websiteId },
+      })
+    }
+
+    const structuredData = {
+      '@context': 'https://schema.org',
+      '@graph': graph,
     }
     const script = existingScript ?? document.createElement('script')
 

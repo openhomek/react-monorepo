@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom'
 
 import Home from '../pages/Home'
 import Community from '../pages/Community'
+import Guide from '../pages/Guide'
 import Layout from '../pages/Layout'
 import Login from '../pages/Login'
 import Register from '../pages/Register'
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: 'community',
         Component: Community,
+      },
+      {
+        path: 'guides/:slug',
+        Component: Guide,
       },
     ],
   },

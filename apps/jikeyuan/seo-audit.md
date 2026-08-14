@@ -93,10 +93,12 @@
 
 ### Do next
 
-- [ ] 確認正式公開網域並設定 `VITE_SITE_URL`。
-- [ ] 有正式網域後生成只包含 `/` 與 `/community` 的 sitemap.xml，並加入 robots.txt。
-- [ ] 未來問題詳情與攻略文章應使用獨立、可分享的 URL，而非只存在於互動狀態。
-- [ ] 對需要準確性的入境、銀行、法律或簽證內容加入來源、更新日期與編輯責任資訊。
+- [x] 正式公開網域確認為 `https://blog.openhomek.com`；靜態 canonical 使用正式網域，動態 metadata 以同源網址為後備。
+- [x] 建立 sitemap.xml，收錄首頁、社區及三篇可索引攻略，並在 robots.txt 宣告 sitemap 位置。
+- [x] 入境、租屋與交通攻略使用獨立、可分享的 URL，首頁和頁尾均提供可抓取連結。
+- [x] 首頁、社區及三篇攻略輸出各自的靜態 HTML head，不再只依賴 JavaScript 產生 title、canonical、Open Graph 與 JSON-LD。
+- [x] 已發布的入境、租屋與交通攻略均加入官方來源、最後核實日期、編輯責任和一般資料免責說明。
+- [ ] 未來新增銀行、法律或簽證內容時沿用相同核實要求。
 
 ### Test and monitor
 
@@ -107,6 +109,5 @@
 
 ## Not verified
 
-- 正式站公開 URL、HTTP 狀態、Search Console 所有權及實際索引狀態未提供。
-- 正式網域未確認，因此沒有猜測 sitemap host 或 production canonical。
+- Search Console 所有權、sitemap 提交狀態及實際索引狀態仍需由網站擁有人登入後確認。
 - 未提供指定關鍵字，這次沒有以 SERP 排名結果做內容差距研究。

@@ -15,12 +15,9 @@ const exploreLinks = [
 ]
 
 const guideLinks = [
-  '入境證件',
-  '租房住宿',
-  '銀行支付',
-  '交通出行',
-  '電話網絡',
-  '校園生活',
+  { label: '非本地學生入境時間線', href: '/guides/hong-kong-entry-timeline' },
+  { label: '香港租屋簽約檢查表', href: '/guides/hong-kong-rental-checklist' },
+  { label: '八達通與港鐵攻略', href: '/guides/octopus-mtr-bus-guide' },
 ]
 
 const legalItems = ['使用條款', '私隱政策', 'Cookie 設定']
@@ -87,9 +84,9 @@ function SiteFooter() {
             常用指南
           </h2>
           <ul className="mt-3 space-y-1 text-sm">
-            {guideLinks.map((label) => (
-              <li key={label}>
-                <FooterLink href="/#categories">{label}</FooterLink>
+            {guideLinks.map((link) => (
+              <li key={link.href}>
+                <FooterLink href={link.href}>{link.label}</FooterLink>
               </li>
             ))}
           </ul>
