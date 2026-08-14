@@ -179,6 +179,7 @@ import pytest
 os.environ.setdefault("MONGO_DB_NAME", "jikeyuan_api_test")
 os.environ.setdefault("INGEST_API_KEY", "test-ingest-key")
 os.environ.setdefault("MEDIA_ROOT", "media_test")
+os.environ.setdefault("MEDIA_PUBLIC_BASE_URL", "http://testserver/media")
 
 from app.config import get_settings  # noqa: E402
 
@@ -636,7 +637,7 @@ def test_factory_returns_local_backend_by_default() -> None:
 def test_factory_rejects_s3_with_missing_config(monkeypatch: pytest.MonkeyPatch) -> None:
     from app.config import get_settings
 
-    monkeypatch.setattr(get_settings.__wrapped__, "storage_backend", "s3")
+    monkeypatch.setattr(get_settings(), "storage_backend", "s3")
 
     with pytest.raises(RuntimeError) as error:
         get_storage()
@@ -644,7 +645,7 @@ def test_factory_rejects_s3_with_missing_config(monkeypatch: pytest.MonkeyPatch)
     assert "S3_ENDPOINT_URL" in str(error.value)
 ```
 
-（`monkeypatch.setattr(get_settings.__wrapped__, …)` 直接改被 lru_cache 的實例屬性，避免動全局 env。）
+（`monkeypatch.setattr(get_settings(), …)` 直接改 lru_cache 快取的 Settings 實例，測試結束自動還原，避免動全局 env。）
 
 - [ ] **Step 2: 跑測試確認失敗**
 
@@ -1046,7 +1047,7 @@ import secrets
 from json import JSONDecodeError
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
+from fastapi import APIRouter, Depends, File, Form, Header, HTTPException, UploadFile
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 
@@ -1059,7 +1060,7 @@ from app.storage import get_storage
 router = APIRouter(tags=["admin"])
 
 
-async def require_api_key(x_api_key: str | None = None) -> None:
+async def require_api_key(x_api_key: str | None = Header(default=None)) -> None:
     expected = get_settings().ingest_api_key
     if x_api_key is None or not secrets.compare_digest(x_api_key, expected):
         raise HTTPException(status_code=401, detail="無效的 API Key")
