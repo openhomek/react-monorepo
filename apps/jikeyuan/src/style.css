@@ -28,6 +28,10 @@ input {
   font: inherit;
 }
 
+::selection {
+  background-color: #ffe5ea;
+}
+
 .horizontal-scroll {
   scrollbar-width: none;
 }

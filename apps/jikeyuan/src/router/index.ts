@@ -1,8 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom'
 
 import Home from '../pages/Home'
+import AskQuestion from '../pages/AskQuestion'
 import Community from '../pages/Community'
 import Guide from '../pages/Guide'
+import Guides from '../pages/Guides'
 import Layout from '../pages/Layout'
 import Login from '../pages/Login'
 import Register from '../pages/Register'
@@ -20,6 +22,14 @@ const router = createBrowserRouter([
       {
         path: 'community',
         Component: Community,
+      },
+      {
+        path: 'questions/new',
+        Component: AskQuestion,
+      },
+      {
+        path: 'guides',
+        Component: Guides,
       },
       {
         path: 'guides/:slug',

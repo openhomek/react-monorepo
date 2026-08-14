@@ -22,4 +22,58 @@ describe('guides', () => {
       expect(guide.sources.every((source) => source.url.startsWith('https://'))).toBe(true)
     }
   })
+
+  it('maps categories onto the site-wide task taxonomy', () => {
+    const taskCategories = new Set([
+      '入境證件',
+      '租房住宿',
+      '銀行支付',
+      '交通出行',
+      '電話網絡',
+      '校園生活',
+    ])
+
+    for (const guide of guides) {
+      expect(taskCategories.has(guide.category)).toBe(true)
+    }
+  })
+
+  it('marks at most one guide as featured', () => {
+    expect(guides.filter((guide) => guide.featured).length).toBeLessThanOrEqual(1)
+  })
+
+  it('gives every section a phase label for the task axis', () => {
+    for (const guide of guides) {
+      for (const section of guide.sections) {
+        expect(section.phase.trim().length).toBeGreaterThan(0)
+      }
+    }
+  })
+
+  it('keeps structured blocks well-formed', () => {
+    for (const guide of guides) {
+      for (const section of guide.sections) {
+        if (section.table !== undefined) {
+          expect(section.table.columns.length).toBeGreaterThanOrEqual(2)
+          for (const row of section.table.rows) {
+            expect(row).toHaveLength(section.table.columns.length)
+          }
+        }
+
+        if (section.steps !== undefined) {
+          expect(section.steps.length).toBeGreaterThanOrEqual(2)
+        }
+
+        for (const figure of section.figures ?? []) {
+          expect(figure.alt.trim().length).toBeGreaterThan(0)
+          expect(figure.caption.trim().length).toBeGreaterThan(0)
+        }
+      }
+
+      for (const item of guide.faq ?? []) {
+        expect(item.question.trim().length).toBeGreaterThan(0)
+        expect(item.answer.trim().length).toBeGreaterThan(0)
+      }
+    }
+  })
 })

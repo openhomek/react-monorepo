@@ -1,6 +1,7 @@
 import { Button, Input } from '@react-monorepo/ui'
 import { Clock3, SendHorizontal } from 'lucide-react'
 import { type FormEvent, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import CommunitySection from '../../components/home/CommunitySection'
 import GuideSection from '../../components/home/GuideSection'
@@ -22,6 +23,7 @@ const categoryItems = [
 ]
 
 function Home() {
+  const navigate = useNavigate()
   const [question, setQuestion] = useState('')
   const [feedback, setFeedback] = useState('')
 
@@ -35,7 +37,7 @@ function Home() {
       return
     }
 
-    setFeedback(`已記錄問題：「${normalizedQuestion}」`)
+    navigate(`/questions/new?title=${encodeURIComponent(normalizedQuestion)}`)
   }
 
   function handleCategorySelect(label: string) {
@@ -93,7 +95,7 @@ function Home() {
             </Button>
           </form>
 
-          <div className="mt-4 flex items-center gap-2 text-xs text-[#666666] sm:text-sm">
+          <div className="mt-4 flex items-center gap-2 text-xs text-[#717171] sm:text-sm">
             <Clock3 className="size-4" />
             <span>通常 10 分鐘內會有同學回覆</span>
           </div>
@@ -122,10 +124,10 @@ function Home() {
 
       <section
         id="categories"
-        className="scroll-mt-24 border-y border-[#eeeeee] bg-[#fdfdfd]"
+        className="scroll-mt-24 border-y border-[#eeeeee] bg-[#f7f7f7]"
         aria-labelledby="categories-heading"
       >
-        <div className="mx-auto max-w-[1200px] px-6 py-[23px] min-[744px]:px-8">
+        <div className="mx-auto max-w-[1200px] px-6 py-6 min-[744px]:px-8">
           <h2 id="categories-heading" className="text-base font-bold sm:text-lg">
             你現在需要什麼？
           </h2>

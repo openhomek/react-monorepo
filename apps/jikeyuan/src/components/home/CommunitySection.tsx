@@ -144,7 +144,7 @@ const feeds: Record<CommunityFeed, CommunityPost[]> = {
 function PostRow({ post }: { post: CommunityPost }) {
   return (
     <article
-      className={`grid min-h-[78px] grid-cols-[48px_minmax(0,1fr)] items-center gap-x-3 border-b border-[#e8e8e8] px-3 py-1.5 sm:grid-cols-[64px_minmax(0,1fr)_62px_78px] sm:px-5 ${
+      className={`grid min-h-[78px] grid-cols-[48px_minmax(0,1fr)] items-center gap-x-3 border-b border-[#eeeeee] px-3 py-1.5 sm:grid-cols-[64px_minmax(0,1fr)_62px_78px] sm:px-5 ${
         post.isRising
           ? 'rounded-xl border border-primary/30 bg-[#fff7f8]'
           : ''
@@ -152,7 +152,7 @@ function PostRow({ post }: { post: CommunityPost }) {
     >
       <div
         className={`flex h-full flex-col items-center justify-center text-3xl font-medium ${
-          post.isRising ? 'text-primary' : 'text-[#666666]'
+          post.isRising ? 'text-primary' : 'text-[#717171]'
         }`}
         aria-label={`排行第 ${post.id}`}
       >
@@ -175,12 +175,12 @@ function PostRow({ post }: { post: CommunityPost }) {
         <h3 className="truncate text-[15px] leading-6 font-semibold text-[#222222] sm:text-base">
           {post.title}
         </h3>
-        <p className="truncate text-xs leading-5 text-[#777777] sm:text-sm">
+        <p className="truncate text-xs leading-5 text-[#717171] sm:text-sm">
           {post.excerpt}
         </p>
       </div>
 
-      <div className="col-start-2 mt-2 flex items-center gap-4 text-xs text-[#666666] sm:col-start-auto sm:mt-0 sm:justify-center">
+      <div className="col-start-2 mt-2 flex items-center gap-4 text-xs text-[#717171] sm:col-start-auto sm:mt-0 sm:justify-center">
         <span className="inline-flex items-center gap-1.5">
           <MessageCircle className="size-4" />
           {post.comments}
@@ -188,7 +188,7 @@ function PostRow({ post }: { post: CommunityPost }) {
         <span className="sm:hidden">{post.time}</span>
       </div>
 
-      <time className="hidden text-right text-xs text-[#666666] sm:block">
+      <time className="hidden text-right text-xs text-[#717171] sm:block">
         {post.time}
       </time>
     </article>

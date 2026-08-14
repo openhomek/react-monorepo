@@ -4,3 +4,7 @@ dist
 *.local
 *.log
 .vite
+
+# Claude Code session-local files
+.claude/settings.local.json
+.impeccable/
