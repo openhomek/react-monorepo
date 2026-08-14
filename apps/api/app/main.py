@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -5,12 +6,19 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.config import get_settings
+from app.db import ensure_indexes
 from app.routers import health
+
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    await ensure_indexes()
+    yield
 
 
 def create_app() -> FastAPI:
     settings = get_settings()
-    app = FastAPI(title="jikeyuan-api")
+    app = FastAPI(title="jikeyuan-api", lifespan=lifespan)
 
     app.add_middleware(
         CORSMiddleware,

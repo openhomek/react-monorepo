@@ -9,7 +9,7 @@ def client() -> TestClient:
     return TestClient(app)
 
 
-def test_health_returns_ok(client: TestClient) -> None:
+def test_health_returns_ok_with_mongo_ping(client: TestClient) -> None:
     response = client.get("/api/health")
 
     assert response.status_code == 200
