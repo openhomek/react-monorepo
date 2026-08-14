@@ -8,3 +8,11 @@ dist
 # Claude Code session-local files
 .claude/settings.local.json
 .impeccable/
+
+# apps/api（Python 服務）
+apps/api/.venv/
+apps/api/media/
+apps/api/media_test/
+apps/api/.pytest_cache/
+__pycache__/
+*.py[cod]
