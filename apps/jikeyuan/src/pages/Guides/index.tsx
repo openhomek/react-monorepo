@@ -38,6 +38,8 @@ import { toast } from 'sonner'
 
 import { categoryGlyphs } from '../../components/guide/categoryGlyphs'
 import { type Guide, guides } from '../../content/guides'
+import { fetchGuides } from '../../apis/guides'
+import { mergeGuides } from './mergeGuides'
 
 type GuidesState =
   | 'ready'
@@ -549,6 +551,40 @@ function Guides() {
   const [draftQuery, setDraftQuery] = useState(activeQuery)
   const [savedSlugs, setSavedSlugs] = useState<string[]>(readSavedGuides)
   const [pendingSaveSlug, setPendingSaveSlug] = useState<string | null>(null)
+  const [remoteGuides, setRemoteGuides] = useState<Guide[]>([])
+  const [remoteTotal, setRemoteTotal] = useState(0)
+  const [remotePage, setRemotePage] = useState(0)
+  const [remoteError, setRemoteError] = useState(false)
+  const [loadMoreFailed, setLoadMoreFailed] = useState(false)
+  const [loadingMore, setLoadingMore] = useState(false)
+
+  async function loadRemotePage(page: number) {
+    try {
+      const result = await fetchGuides({ page, page_size: 20 })
+      if (page === 1) {
+        setRemoteGuides(result.items)
+      } else {
+        setRemoteGuides((current) => {
+          const seen = new Set(current.map((guide) => guide.slug))
+          return [...current, ...result.items.filter((guide) => !seen.has(guide.slug))]
+        })
+      }
+      setRemoteTotal(result.total)
+      setRemotePage(page)
+      setRemoteError(false)
+      setLoadMoreFailed(false)
+    } catch {
+      if (page === 1) {
+        setRemoteError(true)
+      } else {
+        setLoadMoreFailed(true)
+      }
+    }
+  }
+
+  useEffect(() => {
+    void loadRemotePage(1)
+  }, [])
 
   useEffect(() => {
     setDraftQuery(activeQuery)
@@ -560,7 +596,10 @@ function Guides() {
     () => [...guides].sort((a, b) => b.reviewedDate.localeCompare(a.reviewedDate)),
     [],
   )
-  const baseGuides = sort === 'useful' ? guides : latestGuides
+  const baseGuides = useMemo(
+    () => mergeGuides(guides, remoteGuides, sort),
+    [remoteGuides, sort],
+  )
   const featuredGuide = guides.find((guide) => guide.featured) ?? latestGuides[0]
 
   const normalizedQuery = activeQuery.trim().toLowerCase()
@@ -720,6 +759,18 @@ function Guides() {
 
   const saveControls: SaveControls = { savedSlugs, onToggle: toggleSave }
 
+  const hasMoreRemote = remoteGuides.length < remoteTotal
+
+  async function handleLoadMore() {
+    if (loadingMore) return
+    setLoadingMore(true)
+    try {
+      await loadRemotePage(remotePage + 1)
+    } finally {
+      setLoadingMore(false)
+    }
+  }
+
   if (state === 'offline-empty') {
     return (
       <>
@@ -753,6 +804,22 @@ function Guides() {
             按你現在要做的事，找到可靠又最新的步驟。
           </p>
         </header>
+
+        {remoteError && (
+          <Alert className="mt-4 rounded-lg border-primary/30 bg-[#fff5f6]">
+            <WarningCircle size={16} weight="fill" />
+            <AlertDescription className="flex w-full items-center justify-between gap-3 text-sm text-[#c13515]">
+              <span>部分攻略暫時載入不到，以下先顯示本地攻略。</span>
+              <button
+                type="button"
+                className="shrink-0 font-semibold text-primary"
+                onClick={() => void loadRemotePage(1)}
+              >
+                重試
+              </button>
+            </AlertDescription>
+          </Alert>
+        )}
 
         <div className="mt-5 flex gap-7">
           <section className="min-w-0 flex-1" aria-label="攻略列表">
@@ -859,7 +926,7 @@ function Guides() {
                 </>
               ) : null}
 
-              {state === 'load-more-error' ? (
+              {state === 'load-more-error' || loadMoreFailed ? (
                 <Alert className="flex min-h-12 items-center justify-center gap-3 rounded-lg border-primary/30 bg-[#fff5f6] px-4 py-2 text-primary">
                   <WarningCircle size={16} weight="fill" />
                   <AlertDescription className="text-center text-sm text-[#c13515]">
@@ -869,19 +936,23 @@ function Guides() {
                     variant="outline"
                     size="sm"
                     className="h-8 rounded-lg border-primary bg-white px-5 text-primary"
-                    onClick={() => setState('ready')}
+                    onClick={() => {
+                      setLoadMoreFailed(false)
+                      void handleLoadMore()
+                    }}
                   >
                     再試一次
                   </Button>
                 </Alert>
-              ) : listIsVisible && state !== 'offline-cache' ? (
+              ) : listIsVisible && state !== 'offline-cache' && hasMoreRemote ? (
                 <div className="flex justify-center">
                   <Button
                     variant="outline"
                     className="h-11 rounded-lg px-6"
-                    onClick={() => setState('load-more-error')}
+                    onClick={() => void handleLoadMore()}
+                    disabled={loadingMore}
                   >
-                    載入更多
+                    {loadingMore ? '載入中…' : '載入更多'}
                   </Button>
                 </div>
               ) : null}
