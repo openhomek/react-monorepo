@@ -98,3 +98,16 @@ def test_detail_404_for_draft(client: TestClient) -> None:
     seed(client, {"status": "draft"})
 
     assert client.get("/api/guides/xhs-hk-3day-itinerary").status_code == 404
+
+
+def test_list_omits_null_optional_fields(client: TestClient) -> None:
+    seed(client)  # make_article 的 section 只填 title/phase/paragraphs/figures
+
+    guide = client.get("/api/guides/xhs-hk-3day-itinerary").json()["data"]
+
+    assert "steps" not in guide["sections"][0]
+    assert "table" not in guide["sections"][0]
+    assert "checklist" not in guide["sections"][0]
+    assert "note" not in guide["sections"][0]
+    assert "faq" not in guide
+    assert "featured" not in guide

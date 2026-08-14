@@ -36,7 +36,11 @@ async def list_guides(
         .limit(page_size)
     )
     storage = get_storage()
-    items = [to_article_out(document, storage).model_dump() for document in await cursor.to_list(length=page_size)]
+    # exclude_none：可選欄位省略而非輸出 null，與前端 TS optional（undefined）語義一致
+    items = [
+        to_article_out(document, storage).model_dump(exclude_none=True)
+        for document in await cursor.to_list(length=page_size)
+    ]
     return {"data": {"items": items, "total": total, "page": page, "page_size": page_size}}
 
 
@@ -45,4 +49,4 @@ async def get_guide(slug: str) -> dict:
     document = await get_db().articles.find_one({"slug": slug, "status": "published"}, {"_id": 0})
     if document is None:
         raise HTTPException(status_code=404, detail="攻略不存在")
-    return {"data": to_article_out(document, get_storage()).model_dump()}
+    return {"data": to_article_out(document, get_storage()).model_dump(exclude_none=True)}

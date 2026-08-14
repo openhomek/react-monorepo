@@ -59,7 +59,8 @@ async def main() -> None:
         ("images", ("cover.png", PNG_1PX, "image/png")),
         ("images", ("day1.png", PNG_1PX, "image/png")),
     ]
-    async with httpx.AsyncClient(timeout=30) as client:
+    # trust_env=False：忽略系統代理，避免本機代理把 localhost 請求轉發成 502
+    async with httpx.AsyncClient(timeout=30, trust_env=False) as client:
         response = await client.post(
             f"{API_BASE}/admin/articles",
             headers={"X-API-Key": API_KEY},

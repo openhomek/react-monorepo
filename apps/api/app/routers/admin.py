@@ -17,7 +17,10 @@ router = APIRouter(tags=["admin"])
 
 async def require_api_key(x_api_key: str | None = Header(default=None)) -> None:
     expected = get_settings().ingest_api_key
-    if x_api_key is None or not secrets.compare_digest(x_api_key, expected):
+    # bytes 比較：非 ASCII 的 X-API-Key 會讓 str 版 compare_digest 拋 TypeError → 500
+    if x_api_key is None or not secrets.compare_digest(
+        x_api_key.encode("utf-8"), expected.encode("utf-8")
+    ):
         raise HTTPException(status_code=401, detail="無效的 API Key")
 
 
