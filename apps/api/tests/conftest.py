@@ -45,3 +45,13 @@ def clean_media_root():
     """本地存儲的測試文件逐測清空。"""
     yield
     shutil.rmtree(get_settings().media_root, ignore_errors=True)
+
+
+@pytest.fixture
+def client():
+    from fastapi.testclient import TestClient
+
+    from app.main import app
+
+    with TestClient(app) as test_client:
+        yield test_client
