@@ -29,6 +29,14 @@ const pageMetadata: Record<string, PageMetadata> = {
     indexable: true,
     schemaType: 'CollectionPage',
   },
+  '/guides': {
+    title: '香港生活攻略｜入境、租房、交通與銀行｜有解',
+    description:
+      '按任務分類的香港新生與生活攻略：入境證件、租房住宿、銀行支付、交通出行、電話網絡及校園生活，每篇都標示最後核實日期。',
+    canonicalPath: '/guides',
+    indexable: true,
+    schemaType: 'CollectionPage',
+  },
   '/login': {
     title: '登入｜有解',
     description: '登入有解帳戶，繼續收藏香港生活攻略及參與社區問答。',
@@ -124,10 +132,10 @@ function SeoMetadata() {
 
   useEffect(() => {
     const metadata = resolvePageMetadata(location.pathname)
-    const isCommunityPreview =
-      location.pathname === '/community' &&
+    const isStateBoardPreview =
+      (location.pathname === '/community' || location.pathname === '/guides') &&
       new URLSearchParams(location.search).has('state')
-    const isIndexable = metadata.indexable && !isCommunityPreview
+    const isIndexable = metadata.indexable && !isStateBoardPreview
     const siteOrigin = getSiteOrigin()
     const canonicalUrl = `${siteOrigin}${metadata.canonicalPath}`
 
@@ -221,7 +229,7 @@ function SeoMetadata() {
               '@type': 'ListItem',
               position: 2,
               name: '新生攻略',
-              item: `${siteOrigin}/#guides`,
+              item: `${siteOrigin}/guides`,
             },
             {
               '@type': 'ListItem',

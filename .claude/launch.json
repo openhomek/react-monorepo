@@ -1,0 +1,13 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "jikeyuan",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--workspace", "@react-monorepo/jikeyuan"],
+      "port": 5175,
+      "autoPort": true,
+      "autoPort": true
+    }
+  ]
+}
