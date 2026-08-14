@@ -1,0 +1,13 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+jikeyuan_api.egg-info/
+
+# 本地環境配置(範本見 .env.example)
+.env
+
+# 本地媒體存儲(保留目錄)
+media/*
+!media/.gitkeep
+media_test/
