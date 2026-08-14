@@ -3,7 +3,19 @@
   "rewrites": [
     {
       "source": "/community",
-      "destination": "/index.html"
+      "destination": "/community/index.html"
+    },
+    {
+      "source": "/guides/hong-kong-entry-timeline",
+      "destination": "/guides/hong-kong-entry-timeline/index.html"
+    },
+    {
+      "source": "/guides/hong-kong-rental-checklist",
+      "destination": "/guides/hong-kong-rental-checklist/index.html"
+    },
+    {
+      "source": "/guides/octopus-mtr-bus-guide",
+      "destination": "/guides/octopus-mtr-bus-guide/index.html"
     },
     {
       "source": "/login",
