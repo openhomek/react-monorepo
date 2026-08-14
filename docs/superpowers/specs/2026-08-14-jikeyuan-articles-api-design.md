@@ -62,11 +62,15 @@ MongoDB `articles` collection。文件主體即前端 `Guide` 介面形狀，另
   takeaways: [String],     // 可選
   sections: [{
     title: String,
-    paragraphs: [String],  // 可選
-    images: [String],      // 可選；本服務新增，圖文混排；值為存儲鍵
-    checklist: [String],   // 可選
-    note: String,          // 可選
+    phase: String,          // 必填；任務軸標籤（現有頁面慣例）
+    paragraphs: [String],   // 可選
+    steps: [String],        // 可選
+    table: { caption?, columns: [String], rows: [[String]] },  // 可選
+    figures: [{ alt, caption, image }],  // 可選；圖文混排走既有 figures 機制，值為存儲鍵
+    checklist: [String],    // 可選
+    note: String,           // 可選
   }],
+  faq: [{ question, answer }],             // 可選
   sources: [{ label, organization, url }],  // 可選；原文來源由 skill 放入此處展示
 
   // ==== 管理欄位 ====
@@ -86,7 +90,8 @@ MongoDB `articles` collection。文件主體即前端 `Guide` 介面形狀，另
 
 規則：
 - **圖片一律存儲儲鍵**（`articles/<slug>/<filename>`），API 回傳時才拼完整 URL。遷移存儲後端不動資料。
-- 對外響應（`ArticleOut`）剝離 `status/created_at/updated_at/origin`，回傳 `Guide` 形狀、`image`/`images` 為完整 URL。
+- 文件結構完整鏡像前端 `Guide` 介面（`apps/jikeyuan/src/content/guides.ts`），含 `phase`、`steps`、`table`、`faq`。
+- 對外響應（`ArticleOut`）剝離 `status/created_at/updated_at/origin`，回傳 `Guide` 形狀、`path` 由服務端計算為 `/guides/{slug}`、`image`/`figures[].image` 為完整 URL。
 - `draft` 文章不對外公開（讀取端點只回 `published`）；預覽走 mongosh，本階段不做預覽端點。
 
 ## 4. API 設計
@@ -101,7 +106,7 @@ MongoDB `articles` collection。文件主體即前端 `Guide` 介面形狀，另
 | DELETE | `/api/admin/articles/{slug}` | `X-API-Key` | 刪除文件並盡力刪除存儲圖片；孤立文件可接受 |
 | GET | `/api/health` | 公開 | 含 MongoDB ping |
 
-- 列表排序：`publishedDate` 降冪，缺失日期者按 `created_at` 排末段。`q` 對 `title`/`description` 做不區分大小寫正則匹配（小規模夠用；text index 留待有需要再加）。
+- 列表排序：`publishedDate` 降冪（必填欄位，無缺失情況），同值按 `_id` 降冪。`q` 對 `title`/`description` 做不區分大小寫正則匹配（小規模夠用；text index 留待有需要再加）。
 - 列表響應：`{ data: { items: [ArticleOut], total, page, page_size } }`。
 - 錯誤：HTTP 狀態碼 + FastAPI 標準 `{ detail: ... }`；寫入端點 API Key 不符回 401。
 - API Key 用 `INGEST_API_KEY` 環境變量，`secrets.compare_digest` 比對。
@@ -131,11 +136,11 @@ multipart/form-data：
 
 ## 6. 前端對接（apps/jikeyuan）
 
-1. **型別**：`src/content/guides.ts` 的 `GuideSection` 加 `images?: string[]`（唯一型別改動，向後兼容）。
+1. **型別**：零改動——圖文混排複用既有 `GuideSection.figures`（`GuideFigure` 組件已渲染 `figure.image`），封面複用 `Guide.image`（`GuidePhoto` 已渲染）。
 2. **API 模組**：新增 `src/apis/guides.ts`，基於既有 `publicHttp`：`fetchGuides(params)`、`fetchGuideBySlug(slug)`。
-3. **詳情頁** `src/pages/Guide/index.tsx`：解析順序改為 靜態 `getGuideBySlug` → API `fetchGuideBySlug` → 404。API 載入中顯示載入態；請求失敗顯示「載入失敗 + 重試」（區別於 404）。找到後沿用全部既有組件渲染。
-4. **列表頁** `src/pages/Guides/index.tsx`：靜態 3 篇與 API 文章合併、按 `publishedDate` 降冪；「載入更多」改為真分頁（拉 `page+1`）；API 失敗時仍顯示靜態文章 + 頂部錯誤提示條；既有 `?state=` QA 開關優先級不變（可繼續強制演示態）。
-5. **GuideSection 組件**：渲染 `section.images`（`alt = 文章標題 - 圖 N`；懶加載）。
+3. **詳情頁** `src/pages/Guide/index.tsx`：解析順序改為 靜態 `getGuideBySlug` → API `fetchGuideBySlug` → 404。API 載入中顯示載入態；請求失敗顯示「載入失敗 + 重試」（區別於 404）。找到後沿用全部既有組件渲染，並設定 `document.title`。
+4. **列表頁** `src/pages/Guides/index.tsx`：靜態 3 篇與 API 文章合併、`latest` 排序按 `reviewedDate` 降冪（頁面既有慣例）、`useful` 維持靜態順序在前遠端在後；「載入更多」改為真分頁（拉 `page+1`，錯誤復用既有 load-more-error 提示樣式）；初始拉取失敗時仍顯示靜態文章 + 頂部錯誤提示條；既有 `?state=` QA 開關優先級不變（可繼續強制演示態）。
+5. **合併邏輯**：抽成純函數模組（`src/pages/Guides/mergeGuides.ts`），靜態與遠端按 slug 去重（靜態優先），供 vitest 直接測試（倉庫測試慣例為純數據測試，無 DOM 測試基建，不新增）。
 6. **vercel.json**：rewrites 陣列末尾加墊底規則 `{"source": "/guides/(.*)", "destination": "/index.html"}`（既有 3 個靜態條目在前，且 Vercel 靜態文件優先於 rewrites，不受影響）。
 7. **SEO**：動態文章詳情頁用 `SeoMetadata` 設 `robots: noindex`，不進 sitemap（轉載內容的版權/重複內容風險；手寫 3 篇保持靜態 SEO 原樣）。
 
