@@ -40,9 +40,8 @@ def test_import_same_slug_updates_not_duplicates(client: TestClient) -> None:
 
     assert response.status_code == 200
     assert response.json()["data"]["created"] is False
-    # TODO(Task 5): 打開以下兩行（/api/guides 在 Task 5 落地）
-    # list_response = client.get("/api/guides")
-    # assert list_response.json()["data"]["total"] == 1
+    list_response = client.get("/api/guides")
+    assert list_response.json()["data"]["total"] == 1
 
 
 def test_import_rejects_missing_api_key(client: TestClient) -> None:

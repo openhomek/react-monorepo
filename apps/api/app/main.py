@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.config import get_settings
 from app.db import ensure_indexes
-from app.routers import admin, health
+from app.routers import admin, guides, health
 
 
 @asynccontextmanager
@@ -30,6 +30,7 @@ def create_app() -> FastAPI:
 
     app.include_router(health.router, prefix="/api")
     app.include_router(admin.router, prefix="/api")
+    app.include_router(guides.router, prefix="/api")
 
     if settings.storage_backend == "local":
         Path(settings.media_root).mkdir(parents=True, exist_ok=True)
