@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@astryxdesign/core": "^0.4.1",
     "@hookform/resolvers": "^5.7.1",
     "@phosphor-icons/react": "^2.1.10",
     "@react-monorepo/ui": "*",
