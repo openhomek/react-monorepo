@@ -26,7 +26,15 @@
       "destination": "/index.html"
     },
     {
+      "source": "/guides",
+      "destination": "/index.html"
+    },
+    {
       "source": "/guides/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/questions/new",
       "destination": "/index.html"
     }
   ],
