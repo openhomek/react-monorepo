@@ -1,4 +1,8 @@
 import entryCoverImage from '../assets/images/guide/entry-cover.jpg'
+import octopusBusImage from '../assets/images/guide/octopus-bus.jpg'
+import octopusCardGateImage from '../assets/images/guide/octopus-card-gate.jpg'
+import octopusCoverImage from '../assets/images/guide/octopus-cover.jpg'
+import octopusMtrPlatformImage from '../assets/images/guide/octopus-mtr-platform.jpg'
 import relatedBankImage from '../assets/images/guide/related-bank.jpg'
 import relatedMtrImage from '../assets/images/guide/related-mtr.jpg'
 import relatedOctopusImage from '../assets/images/guide/related-octopus.jpg'
@@ -539,6 +543,7 @@ export const guides: Guide[] = [
     publishedDate: '2026-08-14',
     reviewedDate: '2026-08-14',
     readingTime: '約 8 分鐘',
+    image: octopusCoverImage,
     imageAlt: '香港八達通、港鐵和巴士新生交通攻略',
     takeaways: [
       '先選擇適合自己的實體或手機八達通，再按日常需要增值和開啟交易紀錄查閱功能。',
@@ -567,6 +572,7 @@ export const guides: Guide[] = [
           {
             alt: '八達通卡與港鐵入閘機的使用示意',
             caption: '八達通適用於港鐵、巴士和多種日常小額付款',
+            image: octopusCardGateImage,
           },
         ],
       },
@@ -597,6 +603,13 @@ export const guides: Guide[] = [
           '比較直接巴士與港鐵轉車的總時間。',
           '遇上惡劣天氣或大型活動時重新查閱官方交通資訊。',
         ],
+        figures: [
+          {
+            alt: '月台上的列車與乘客',
+            caption: '出發前核對月台、路線與尾班車',
+            image: octopusMtrPlatformImage,
+          },
+        ],
       },
       {
         title: '第一次乘巴士、小巴和渡輪',
@@ -604,6 +617,13 @@ export const guides: Guide[] = [
         paragraphs: [
           '不同營辦商、路線和車種可能有不同的上落車、付款、分段收費及優惠安排。上車前看清路線號碼、方向和目的地，並留意車站或車廂內的付款提示。',
           '如果對下車位置不熟悉，可先在地圖標記目的地附近的站名，留意報站並預留步行時間。涉及優惠或轉乘折扣時，以交通營辦商和八達通當時公布的條款為準。',
+        ],
+        figures: [
+          {
+            alt: '香港雙層巴士停靠站點',
+            caption: '巴士、小巴與渡輪的付款及優惠安排各不相同',
+            image: octopusBusImage,
+          },
         ],
         note: '車費、優惠、班次和申請資格都可能變動。本頁提供判斷與準備方法，實際出發或申請前請再次查閱官方資料。',
       },
