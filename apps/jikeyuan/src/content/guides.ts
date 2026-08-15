@@ -1,7 +1,7 @@
 import entryCoverImage from '../assets/images/guide/entry-cover.jpg'
 import octopusBusImage from '../assets/images/guide/octopus-bus.jpg'
 import octopusCardGateImage from '../assets/images/guide/octopus-card-gate.jpg'
-import octopusCoverImage from '../assets/images/guide/octopus-cover.jpg'
+import octopusCoverCardImage from '../assets/images/guide/octopus-cover-card.jpg'
 import octopusMtrPlatformImage from '../assets/images/guide/octopus-mtr-platform.jpg'
 import relatedBankImage from '../assets/images/guide/related-bank.jpg'
 import relatedMtrImage from '../assets/images/guide/related-mtr.jpg'
@@ -543,7 +543,7 @@ export const guides: Guide[] = [
     publishedDate: '2026-08-14',
     reviewedDate: '2026-08-14',
     readingTime: '約 8 分鐘',
-    image: octopusCoverImage,
+    image: octopusCoverCardImage,
     imageAlt: '香港八達通、港鐵和巴士新生交通攻略',
     takeaways: [
       '先選擇適合自己的實體或手機八達通，再按日常需要增值和開啟交易紀錄查閱功能。',
