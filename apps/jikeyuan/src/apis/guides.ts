@@ -12,6 +12,7 @@ export interface RemoteGuidesPage {
 export interface FetchGuidesParams {
   page?: number
   page_size?: number
+  category?: string
 }
 
 interface GuidesListResponse {
