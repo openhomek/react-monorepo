@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
+import logoUrl from '../../assets/logo.svg'
 import { fetchGuides, type RemoteGuidesPage } from '../../apis/guides'
 import { categoryGlyphs } from './categoryGlyphs'
 import { type Guide, guides, type GuideRelatedCard } from '../../content/guides'
@@ -68,15 +69,13 @@ function RelatedCard({ card }: { card: GuideRelatedCard }) {
         {card.description !== undefined && (
           <p className="mt-1.5 line-clamp-2 h-[46px] text-sm leading-[23px] text-[#6c6c6c]">{card.description}</p>
         )}
-        <div className="mt-auto flex items-center whitespace-nowrap pt-3">
-          <span
-            aria-hidden="true"
-            className="flex size-[22px] shrink-0 items-center justify-center rounded-full bg-[#f0f0f0] text-[11px] font-semibold text-[#626262]"
-          >
-            {author.slice(0, 1)}
+        <div className="mt-auto flex min-w-0 items-center gap-2 whitespace-nowrap pt-3 text-xs text-[#717171]">
+          <span className="flex size-6 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#FF3348]">
+            <img alt="" aria-hidden="true" className="h-3 w-auto max-w-none" src={logoUrl} />
           </span>
-          <span className="ml-[7px] truncate text-[13px] font-semibold text-[#626262]">{author}</span>
-          <time className="ml-2.5 shrink-0 text-xs text-[#777777]">{card.publishedDate ?? card.reviewedDate}</time>
+          <span className="truncate">
+            {author} · <time dateTime={card.publishedDate ?? card.reviewedDate}>{card.publishedDate ?? card.reviewedDate}</time>
+          </span>
         </div>
       </div>
     </article>
