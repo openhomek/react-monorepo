@@ -4,10 +4,8 @@
     {
       "name": "jikeyuan",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--workspace", "@react-monorepo/jikeyuan"],
-      "port": 5175,
-      "autoPort": true,
-      "autoPort": true
+      "runtimeArgs": ["run", "dev", "-w", "@react-monorepo/jikeyuan", "--", "--port", "5177"],
+      "port": 5177
     }
   ]
 }
