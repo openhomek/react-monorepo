@@ -1,7 +1,9 @@
 import { Badge } from '@react-monorepo/ui'
 import { ArrowRight, BookOpenText, SealCheck } from '@phosphor-icons/react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
+import { fetchGuides } from '../../apis/guides'
 import { type Guide, guides } from '../../content/guides'
 
 function GuideCard({ guide }: { guide: Guide }) {
@@ -11,13 +13,23 @@ function GuideCard({ guide }: { guide: Guide }) {
         to={guide.path}
         className="block h-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       >
-        <div
-          className="flex aspect-[16/7] items-center justify-center bg-[#fff7f8] text-primary"
-          role="img"
-          aria-label={guide.imageAlt}
-        >
-          <BookOpenText size={40} weight="duotone" aria-hidden="true" />
-        </div>
+        {guide.image !== undefined ? (
+          <img
+            src={guide.image}
+            alt={guide.imageAlt}
+            loading="lazy"
+            decoding="async"
+            className="aspect-[16/7] w-full object-cover"
+          />
+        ) : (
+          <div
+            className="flex aspect-[16/7] items-center justify-center bg-[#fff7f8] text-primary"
+            role="img"
+            aria-label={guide.imageAlt}
+          >
+            <BookOpenText size={40} weight="duotone" aria-hidden="true" />
+          </div>
+        )}
 
         <div className="flex min-h-[198px] flex-col p-4">
           <Badge
@@ -55,6 +67,29 @@ function GuideCard({ guide }: { guide: Guide }) {
 }
 
 function GuideSection() {
+  const [latestGuides, setLatestGuides] = useState<Guide[] | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+
+    void (async () => {
+      try {
+        const result = await fetchGuides({ page: 1, page_size: 3 })
+        if (!cancelled && result.items.length > 0) {
+          setLatestGuides(result.items)
+        }
+      } catch {
+        // 後端不可用時沿用官撰攻略
+      }
+    })()
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const shown = latestGuides ?? guides
+
   return (
     <section
       id="guides"
@@ -81,7 +116,7 @@ function GuideSection() {
         </div>
 
         <div className="mt-5 grid gap-4 min-[744px]:grid-cols-3">
-          {guides.map((guide) => (
+          {shown.map((guide) => (
             <GuideCard key={guide.slug} guide={guide} />
           ))}
         </div>
