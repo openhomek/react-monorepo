@@ -60,6 +60,7 @@ export interface GuideRelatedCard {
   imageAlt: string
   reviewedDate: string
   readingTime: string
+  publishedDate?: string
   description?: string
   author?: string
 }
