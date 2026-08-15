@@ -19,11 +19,11 @@ function GuideCard({ guide }: { guide: Guide }) {
             alt={guide.imageAlt}
             loading="lazy"
             decoding="async"
-            className="aspect-[16/7] w-full object-cover"
+            className="aspect-[1.9/1] w-full object-cover"
           />
         ) : (
           <div
-            className="flex aspect-[16/7] items-center justify-center bg-[#fff7f8] text-primary"
+            className="flex aspect-[1.9/1] items-center justify-center bg-[#fff7f8] text-primary"
             role="img"
             aria-label={guide.imageAlt}
           >
