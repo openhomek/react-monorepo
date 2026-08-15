@@ -97,6 +97,8 @@
 - [x] 建立 sitemap.xml，收錄首頁、社區及三篇可索引攻略，並在 robots.txt 宣告 sitemap 位置。
 - [x] 入境、租屋與交通攻略使用獨立、可分享的 URL，首頁和頁尾均提供可抓取連結。
 - [x] 首頁、社區及三篇攻略輸出各自的靜態 HTML head，不再只依賴 JavaScript 產生 title、canonical、Open Graph 與 JSON-LD。
+- [x] 攻略總覽 `/guides` 輸出專屬靜態 HTML head 與 ItemList，主導覽及頁尾直接連到該內容入口。
+- [x] 攻略搜尋、分類、排序及測試狀態的查詢網址使用 `noindex, follow`，並統一 canonical 至 `/guides`。
 - [x] 已發布的入境、租屋與交通攻略均加入官方來源、最後核實日期、編輯責任和一般資料免責說明。
 - [ ] 未來新增銀行、法律或簽證內容時沿用相同核實要求。
 
@@ -110,4 +112,4 @@
 ## Not verified
 
 - Search Console 所有權、sitemap 提交狀態及實際索引狀態仍需由網站擁有人登入後確認。
-- 未提供指定關鍵字，這次沒有以 SERP 排名結果做內容差距研究。
+- 本輪已抽查「香港新生生活攻略」「非本地學生入境香港」「香港租樓攻略」與「香港八達通／港鐵攻略」的搜尋意圖；完整關鍵字曝光、點擊與排名仍需以 Search Console 的實際資料驗證。

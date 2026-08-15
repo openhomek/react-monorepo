@@ -27,7 +27,7 @@
     },
     {
       "source": "/guides",
-      "destination": "/index.html"
+      "destination": "/guides/index.html"
     },
     {
       "source": "/guides/(.*)",
@@ -50,6 +50,26 @@
     {
       "source": "/community",
       "has": [{ "type": "query", "key": "state" }],
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }]
+    },
+    {
+      "source": "/guides",
+      "has": [{ "type": "query", "key": "state" }],
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }]
+    },
+    {
+      "source": "/guides",
+      "has": [{ "type": "query", "key": "q" }],
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }]
+    },
+    {
+      "source": "/guides",
+      "has": [{ "type": "query", "key": "category" }],
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }]
+    },
+    {
+      "source": "/guides",
+      "has": [{ "type": "query", "key": "sort" }],
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }]
     },
     {

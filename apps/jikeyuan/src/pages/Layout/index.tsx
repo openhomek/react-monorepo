@@ -20,7 +20,7 @@ import { clearAuthError, logoutAccount } from '../../features/auth/authSlice'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 
 const navigationItems = [
-  { label: '新生攻略', href: '/#guides' },
+  { label: '新生攻略', href: '/guides' },
   { label: '生活指南', href: '/#categories' },
   { label: '社區', href: '/community' },
 ]

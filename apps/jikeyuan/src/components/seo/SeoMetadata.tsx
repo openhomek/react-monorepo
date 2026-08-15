@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { getGuideByPath, type Guide } from '../../content/guides'
+import { getGuideByPath, guides, type Guide } from '../../content/guides'
 
 interface PageMetadata {
   title: string
@@ -132,10 +132,11 @@ function SeoMetadata() {
 
   useEffect(() => {
     const metadata = resolvePageMetadata(location.pathname)
-    const isStateBoardPreview =
-      (location.pathname === '/community' || location.pathname === '/guides') &&
-      new URLSearchParams(location.search).has('state')
-    const isIndexable = metadata.indexable && !isStateBoardPreview
+    const searchParams = new URLSearchParams(location.search)
+    const isNoncanonicalQuery =
+      (location.pathname === '/community' && searchParams.has('state')) ||
+      (location.pathname === '/guides' && searchParams.size > 0)
+    const isIndexable = metadata.indexable && !isNoncanonicalQuery
     const siteOrigin = getSiteOrigin()
     const canonicalUrl = `${siteOrigin}${metadata.canonicalPath}`
 
@@ -250,6 +251,20 @@ function SeoMetadata() {
         inLanguage: 'zh-Hant-HK',
         isPartOf: { '@id': websiteId },
       })
+
+      if (metadata.canonicalPath === '/guides') {
+        graph.push({
+          '@type': 'ItemList',
+          '@id': `${canonicalUrl}#guide-list`,
+          name: '香港生活攻略',
+          itemListElement: guides.map((guide, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            name: guide.title,
+            url: `${siteOrigin}${guide.path}`,
+          })),
+        })
+      }
     }
 
     const structuredData = {

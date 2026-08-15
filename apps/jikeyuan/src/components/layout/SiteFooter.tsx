@@ -7,7 +7,7 @@ import logo from '../../assets/logo.svg'
 import openHomeKLogo from '../../assets/partners/openhomek-lockup-horizontal-black.svg'
 
 const exploreLinks = [
-  { label: '新生攻略', href: '/#guides' },
+  { label: '新生攻略', href: '/guides' },
   { label: '生活指南', href: '/#categories' },
   { label: '社區論壇', href: '/community' },
   { label: '本週熱門問答', href: '/community' },
