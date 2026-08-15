@@ -9,7 +9,7 @@ import {
   SheetTrigger,
   Spinner,
 } from '@react-monorepo/ui'
-import { Menu, Search } from 'lucide-react'
+import { List, MagnifyingGlass } from '@phosphor-icons/react'
 import { useState } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 
@@ -87,7 +87,7 @@ function Layout() {
                 aria-label="搜尋或提問"
                 onClick={focusQuestionInput}
               >
-                <Search />
+                <MagnifyingGlass size={20} weight="regular" />
               </Button>
             )}
 
@@ -129,7 +129,7 @@ function Layout() {
                   className="size-11 rounded-full min-[744px]:hidden"
                   aria-label="開啟導覽選單"
                 >
-                  <Menu />
+                  <List size={20} weight="regular" />
                 </Button>
               </SheetTrigger>
               <SheetContent className="w-[min(86vw,340px)] p-0">

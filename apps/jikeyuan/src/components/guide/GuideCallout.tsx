@@ -1,17 +1,16 @@
-import { Alert, AlertDescription, AlertTitle } from '@react-monorepo/ui'
 import { Lightbulb, WarningCircle } from '@phosphor-icons/react'
 import type { ReactNode } from 'react'
 
 type GuideCalloutVariant = 'tip' | 'warning'
 
 const calloutIcons: Record<GuideCalloutVariant, ReactNode> = {
-  tip: <Lightbulb weight="fill" aria-hidden="true" className="text-primary" />,
-  warning: <WarningCircle weight="fill" aria-hidden="true" className="text-primary" />,
+  tip: <Lightbulb size={18} weight="fill" aria-hidden="true" className="text-primary" />,
+  warning: <WarningCircle size={18} weight="fill" aria-hidden="true" className="text-primary" />,
 }
 
 const calloutSurfaces: Record<GuideCalloutVariant, string> = {
-  tip: 'border-[#ffd1d9] bg-[#fff7f8]',
-  warning: 'border-primary/30 bg-[#fff5f6]',
+  tip: 'border-[#ffd6dd] bg-[#fff7f8]',
+  warning: 'border-[#ffd6dd] bg-[#fff5f6]',
 }
 
 interface GuideCalloutProps {
@@ -22,13 +21,17 @@ interface GuideCalloutProps {
 
 function GuideCallout({ variant = 'tip', title, children }: GuideCalloutProps) {
   return (
-    <Alert className={`mt-6 rounded-[14px] ${calloutSurfaces[variant]}`}>
-      {calloutIcons[variant]}
-      {title !== undefined && (
-        <AlertTitle className="text-sm font-semibold text-[#222222]">{title}</AlertTitle>
-      )}
-      <AlertDescription className="text-sm leading-7 text-[#3f3f3f]">{children}</AlertDescription>
-    </Alert>
+    <aside
+      className={`mt-6 flex gap-2.5 rounded-[10px] border px-4 py-3.5 ${calloutSurfaces[variant]}`}
+    >
+      <span className="mt-0.5 shrink-0">{calloutIcons[variant]}</span>
+      <div className="min-w-0">
+        {title !== undefined && (
+          <p className="text-[14px] font-semibold leading-6 text-[#222222]">{title}</p>
+        )}
+        <p className="text-[13.5px] leading-[1.8] text-[#3f3f3f]">{children}</p>
+      </div>
+    </aside>
   )
 }
 

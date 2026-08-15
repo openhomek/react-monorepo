@@ -8,7 +8,10 @@ import {
   initializeSession,
   sessionExpired,
 } from './features/auth/authSlice'
+import './layers.css'
 import './style.css'
+import '@astryxdesign/core/reset.css'
+import '@astryxdesign/core/astryx.css'
 import router from './router'
 import { store } from './store'
 

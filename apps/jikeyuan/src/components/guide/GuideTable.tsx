@@ -12,14 +12,14 @@ import type { GuideTableData } from '../../content/guides'
 function GuideTable({ data }: { data: GuideTableData }) {
   return (
     <figure className="mt-6">
-      <div className="overflow-x-auto rounded-[14px] border border-[#dddddd]">
+      <div className="overflow-x-auto rounded-[10px] border border-[#dddddd]">
         <Table className="min-w-[600px]">
           <TableHeader className="bg-[#f7f7f7]">
             <TableRow className="hover:bg-transparent">
               {data.columns.map((column) => (
                 <TableHead
                   key={column}
-                  className="whitespace-nowrap px-4 py-3 text-[13px] font-semibold text-[#222222]"
+                  className="whitespace-nowrap px-3.5 py-2.5 text-[13px] font-semibold text-[#222222]"
                 >
                   {column}
                 </TableHead>
@@ -32,7 +32,7 @@ function GuideTable({ data }: { data: GuideTableData }) {
                 {row.map((cell, cellIndex) => (
                   <TableCell
                     key={`${row.join('|')}-${cellIndex}`}
-                    className={`px-4 py-3 text-sm leading-6 ${
+                    className={`px-3.5 py-2.5 text-sm leading-6 ${
                       cellIndex === 0 ? 'font-medium text-[#222222]' : 'text-[#3f3f3f]'
                     }`}
                   >

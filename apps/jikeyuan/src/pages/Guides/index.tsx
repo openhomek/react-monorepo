@@ -36,6 +36,7 @@ import { type FormEvent, useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
+import logo from '../../assets/logo.svg'
 import { categoryGlyphs } from '../../components/guide/categoryGlyphs'
 import { type Guide, guides } from '../../content/guides'
 import { fetchGuides } from '../../apis/guides'
@@ -143,12 +144,9 @@ function SaveButton({ guide, controls }: { guide: Guide; controls: SaveControls 
       type="button"
       aria-pressed={saved}
       aria-label={saved ? `取消收藏「${guide.cardTitle}」` : `收藏「${guide.cardTitle}」`}
-      onClick={(event) => {
-        event.preventDefault()
-        controls.onToggle(guide)
-      }}
-      className={`absolute right-3 top-3 z-10 flex size-11 items-center justify-center rounded-full bg-white text-[#222222] shadow-[0_1px_2px_rgba(34,34,34,0.1)] transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
-        saved ? 'text-primary' : ''
+      onClick={() => controls.onToggle(guide)}
+      className={`flex size-11 shrink-0 items-center justify-center rounded-full transition-colors hover:bg-[#f7f7f7] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+        saved ? 'text-primary' : 'text-[#222222]'
       }`}
     >
       <BookmarkSimple size={20} weight={saved ? 'fill' : 'regular'} aria-hidden="true" />
@@ -159,22 +157,17 @@ function SaveButton({ guide, controls }: { guide: Guide; controls: SaveControls 
 function GuideCard({ guide, controls }: { guide: Guide; controls: SaveControls }) {
   return (
     <article className="group flex flex-col overflow-hidden rounded-[14px] border border-[#dddddd] bg-white transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_12px_30px_rgba(34,34,34,0.08)]">
-      <div className="relative">
-        <Link
-          to={guide.path}
-          aria-label={`閱讀攻略：${guide.cardTitle}`}
-          className="block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-        >
-          <GuidePhoto guide={guide} plateClassName="aspect-[3/2]" />
-        </Link>
-        <Badge className="absolute left-3 top-3 z-10 h-7 rounded-full bg-white px-2.5 text-[11px] font-semibold text-[#222222] shadow-[0_1px_2px_rgba(34,34,34,0.08)]">
-          {guide.category}
-        </Badge>
-        <SaveButton guide={guide} controls={controls} />
-      </div>
+      <Link
+        to={guide.path}
+        aria-label={`閱讀攻略：${guide.cardTitle}`}
+        className="block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      >
+        <GuidePhoto guide={guide} plateClassName="aspect-[1.9/1]" />
+      </Link>
 
       <div className="flex flex-1 flex-col p-4">
-        <h3 className="text-base leading-6 font-semibold text-[#222222]">
+        <span className="text-xs font-semibold text-primary">{guide.category}</span>
+        <h3 className="mt-1.5 text-base leading-6 font-semibold text-[#222222]">
           <Link
             to={guide.path}
             className="group-hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
@@ -186,15 +179,16 @@ function GuideCard({ guide, controls }: { guide: Guide; controls: SaveControls }
           {guide.description}
         </p>
 
-        <div className="mt-auto flex items-center justify-between gap-3 pt-4 text-xs text-[#717171]">
-          <span className="inline-flex min-w-0 items-center gap-1.5">
-            <SealCheck size={14} weight="regular" aria-hidden="true" className="shrink-0 text-primary" />
-            最後核實 {guide.reviewedDate}
+        <div className="mt-auto flex items-center justify-between gap-3 pt-4">
+          <span className="flex min-w-0 items-center gap-2 text-xs text-[#717171]">
+            <span className="flex size-6 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#FF3348]">
+              <img src={logo} alt="" aria-hidden="true" className="h-3 w-auto max-w-none" />
+            </span>
+            <span className="truncate">
+              有解編輯部 · <time dateTime={guide.reviewedDate}>{guide.reviewedDate}</time>
+            </span>
           </span>
-          <span className="inline-flex shrink-0 items-center gap-1.5">
-            <Clock size={14} weight="regular" aria-hidden="true" />
-            {guide.readingTime}
-          </span>
+          <SaveButton guide={guide} controls={controls} />
         </div>
       </div>
     </article>
@@ -296,9 +290,6 @@ function FeaturedGuide({ guide, controls }: { guide: Guide; controls: SaveContro
             guide={guide}
             plateClassName="aspect-[16/10] min-[744px]:aspect-auto min-[744px]:h-full"
           />
-          <Badge className="absolute left-4 top-4 z-10 h-7 rounded-full bg-white px-3 text-[11px] font-semibold text-[#222222] shadow-[0_1px_2px_rgba(34,34,34,0.08)]">
-            編輯精選
-          </Badge>
         </Link>
 
         <div className="flex flex-col p-5 min-[744px]:p-7">
@@ -382,11 +373,16 @@ function GuidesSkeleton() {
       <div className="mt-6 grid gap-4 min-[744px]:grid-cols-2 min-[1128px]:grid-cols-3">
         {Array.from({ length: 6 }).map((_, index) => (
           <div key={index} className="overflow-hidden rounded-[14px] border border-[#dddddd]">
-            <Skeleton className="aspect-[3/2] rounded-none bg-[#f2f2f2]" />
+            <Skeleton className="aspect-[1.9/1] rounded-none bg-[#f2f2f2]" />
             <div className="space-y-2.5 p-4">
+              <Skeleton className="h-3 w-14 bg-[#f2f2f2]" />
               <Skeleton className="h-4 w-11/12 bg-[#ebebeb]" />
               <Skeleton className="h-3 w-full bg-[#f2f2f2]" />
               <Skeleton className="h-3 w-2/3 bg-[#f2f2f2]" />
+              <div className="flex items-center justify-between pt-2">
+                <Skeleton className="h-6 w-36 rounded-full bg-[#ebebeb]" />
+                <Skeleton className="size-8 rounded-full bg-[#f2f2f2]" />
+              </div>
             </div>
           </div>
         ))}
@@ -633,7 +629,7 @@ function Guides() {
   }, [state, normalizedQuery.length, activeQuery, category, listIsVisible, visibleGuides.length])
 
   const pendingGuide =
-    pendingSaveSlug === null ? undefined : guides.find((guide) => guide.slug === pendingSaveSlug)
+    pendingSaveSlug === null ? undefined : baseGuides.find((guide) => guide.slug === pendingSaveSlug)
 
   useEffect(() => {
     if (state === 'guest-favorite' && pendingSaveSlug === null && featuredGuide !== undefined) {
